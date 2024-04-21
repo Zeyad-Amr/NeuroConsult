@@ -9,10 +9,10 @@ import { UserGuard } from './user/user.guard';
   imports: [UserModule],
   controllers: [AppController],
   providers: [
-    {
-      provide: APP_GUARD,
-      useClass: UserGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: UserGuard,
+    // },
     AppService
   ],
 })
