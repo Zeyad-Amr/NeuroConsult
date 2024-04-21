@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client';
 import { PrismaService } from './prisma.service';
 import { Injectable } from '@nestjs/common';
 @Injectable()
@@ -6,7 +5,7 @@ export class PrismaGenericRepo<N, T> {
   constructor(
     private modelName: string,
     private prisma: PrismaService,
-    protected includesObj?: Prisma.OrderInclude | Prisma.ClientInclude | Prisma.ProductInclude
+    protected includesObj?: any
   ) {
     this.modelName = modelName;
     this.includesObj = includesObj;
