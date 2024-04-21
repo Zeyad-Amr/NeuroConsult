@@ -1,11 +1,9 @@
 "use client"
-import { Box, Button, Divider, FormHelperText, LinearProgress, Stack, Typography } from "@mui/material";
+import { Box, Button, Divider, FormHelperText, LinearProgress, Stack, TextField, Typography } from "@mui/material";
 import { Formik } from "formik";
 import * as Yup from "yup"
-import InputField from "@/components/InputField";
-import colors from "@/styles/colors";
 import { useEffect, useState } from "react";
-import api from "@/core/api/api";
+import axios from "../../../core/api/api";
 
 interface ILoginData {
   username: string
@@ -22,6 +20,11 @@ export default function LoginForm() {
   const [loading, setLoading] = useState(false)
 
   const handleFormSubmit = async (values: ILoginData) => {
+    axios.post('/',values).then((res : any) => {
+      console.log(res?.data);
+    }).catch((err : any) => {
+      console.log(err);
+    })
 
   }
   return (
@@ -33,7 +36,7 @@ export default function LoginForm() {
       </Box>
       <Divider />
       <Box sx={{
-        color: colors.black,
+        color: "#000",
         pt: 2,
       }}>
         <Formik
@@ -54,7 +57,7 @@ export default function LoginForm() {
           }) => (
             <Box component="form" onSubmit={handleSubmit}>
               <Stack direction={"column"} gap={2}>
-                <InputField
+                <TextField
                   required
                   title="Username*"
                   variant="outlined"
@@ -68,7 +71,7 @@ export default function LoginForm() {
                   }
                   error={errors.username && touched.username ? true : false}
                 />
-                <InputField
+                <TextField
                   title="Password*"
                   required
                   name="password"
