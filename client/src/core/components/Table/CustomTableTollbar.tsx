@@ -1,7 +1,6 @@
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
-import colors from '@/styles/colors';
 import { Autocomplete, Box, TextField, Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { alpha } from '@mui/material/styles';
@@ -9,7 +8,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { useTableContext } from '@/components/TableView/context';
+import { useTableContext } from './context';
 
 
 interface CustomTableTollbarProps {
@@ -64,7 +63,7 @@ export default function CustomTableTollbar({
                     width: {
                         lg: "40%", md: "40%", sm: "100%", xs: "100%"
                     },
-                    borderBottom: `1px solid ${colors.orange}`
+                    borderBottom: `1px solid orange`
                 }
                 }
                 elevation={0}
@@ -89,7 +88,7 @@ export default function CustomTableTollbar({
                 <Toolbar
                     sx={{
                         ...(numSelected > 0 && {
-                            bgcolor: colors.secondaryColor,
+                            bgcolor: "#e3e3e3",
                         }),
                         borderRadius: "5px",
                         width: "100%"
