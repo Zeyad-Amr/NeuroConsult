@@ -1,5 +1,6 @@
 class AppRoutes {
   static readonly home = "/";
+  static readonly login = "/login";
   static readonly Error404 = "*";
   
 }

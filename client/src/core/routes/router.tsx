@@ -3,6 +3,7 @@ import AppRoutes from "./AppRoutes";
 import { ReactElement } from "react";
 import { Route } from "react-router-dom";
 import ErrorPage from "../components/error-404/ErrorPage";
+import LoginPage from "../../modules/login/pages/LoginPage";
 
 
 
@@ -11,6 +12,10 @@ class RouterClass {
     {
       path: AppRoutes.home,
       element: <ErrorPage/>,
+    },
+    {
+      path: AppRoutes.login,
+      element: <LoginPage/>,
     },
     {
       path: AppRoutes.Error404,
