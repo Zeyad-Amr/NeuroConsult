@@ -21,7 +21,7 @@
 }
 
 .image-cover {
-    background-image: url(../../../assets/renewable.webp);
+    /* background-image: url(../../../assets/renewable.webp); */
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
