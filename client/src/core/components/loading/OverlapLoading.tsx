@@ -1,21 +1,20 @@
 import React, { useEffect } from "react";
 import { useLoading } from "../../services/loading-service";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import PropagateLoader from "react-spinners/PropagateLoader";
 import axios from "axios";
 import api from "../../api/api";
-import "./OverlapLoading.css";
-import { BarLoader } from "react-spinners";
 
 const LoadingOverlay = () => {
   const { loading, setLoadingState } = useLoading();
 
   useEffect(() => {
     const requestInterceptorCustomAxios = api.interceptors.request.use(
-      (config) => {
+      (config : any) => {
         setLoadingState(true);
         return config;
       },
-      (error) => {
+      (error : any) => {
         setLoadingState(false);
         return Promise.reject(error);
       }
@@ -62,31 +61,42 @@ const LoadingOverlay = () => {
     };
   }, [setLoadingState]);
 
-  return (
-    <Box className="image-cover">
-      <Box
-        style={{
-          width: "100vw",
-          height: "100vh",
-          backgroundColor: "rgba(0, 0, 0, 0.8)",
-          color: "#fff",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: 9999,
-        }}
-      >
-        <Box className="content">
-          <h2>HCIS2</h2>
-          <h2>HCIS2</h2>
-        </Box>
-        <Box>
-          <BarLoader color={"#fff"} loading={true} />
-        </Box>
+  return loading ? (
+    <Box
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        color: "#fff",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: 9999,
+      }}
+    >
+      <Box sx={{ display: "flex" }}>
+        <Typography
+          sx={{
+            fontWeight: "600",
+            fontSize: "3rem",
+            color: "#fff",
+          }}
+        >
+          HCIS
+        </Typography>
+        <Typography
+          sx={{ fontWeight: "600", fontSize: "3rem", color: "primary.main" }}
+        >
+          2
+        </Typography>
       </Box>
+      <PropagateLoader color={"#13D2DE"} loading={true} size={10} />
     </Box>
-  );
+  ) : null;
 };
 
 export default LoadingOverlay;
