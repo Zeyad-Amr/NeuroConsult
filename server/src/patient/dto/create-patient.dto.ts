@@ -1,5 +1,5 @@
 import { CreateUserDto } from "@/user/dto/create-user.dto";
-import { $Enums, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { Transform, Type } from "class-transformer";
 import { IsArray, IsDateString, IsEnum, IsNotEmpty, IsObject, IsOptional, IsPhoneNumber, IsString, MinLength, ValidateNested } from "class-validator";
 
@@ -30,7 +30,7 @@ export class PatientDto implements Prisma.PatientCreateInput {
     @IsOptional()
     @IsArray()
     @IsString()
-    comorbidities?: Prisma.PatientCreatecomorbiditiesInput | $Enums.Comorbidity[];
+    comorbidities?: string[];
 
     @IsNotEmpty()
     @IsString()

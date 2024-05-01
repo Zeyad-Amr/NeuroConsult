@@ -14,11 +14,9 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(cuid())
-  username String  @unique
+  id       String @id @default(cuid())
+  username String @unique
   password String
-  email    String? @unique
-  type     String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -104,7 +102,7 @@ model Imaging {
 model ConsultatinReq {
   id        String   @id @default(cuid())
   complaint String
-  result    String
+  result    String?
   patient   Patient? @relation(fields: [patientId], references: [id])
   patientId String?
 }
