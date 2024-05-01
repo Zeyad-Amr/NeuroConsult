@@ -3,6 +3,10 @@ import { Box, Button, Divider, FormHelperText, LinearProgress, Stack, TextField,
 import { Formik } from "formik";
 import * as Yup from "yup"
 import { useEffect, useState } from "react";
+import axios from "../../../core/api/api"
+import endPoints from "../../../core/api/endpoints"
+import { saveLocalStorageData } from "../../../core/services/shared-service";
+
 
 interface ILoginData {
   username: string
@@ -19,7 +23,15 @@ export default function LoginForm() {
   const [loading, setLoading] = useState(false)
 
   const handleFormSubmit = async (values: ILoginData) => {
-
+    axios.post(endPoints.login,values).then((res : any) => {
+      console.log(res);
+      console.log(res?.data);
+      if (res?.data) {
+        saveLocalStorageData('userData',res?.data)
+      }
+    }).catch((err : any) => {
+      console.log(err);
+    })
   }
   return (
     <Box sx={{ width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'flex-end', overflow: 'hidden', position: 'relative' }}>
