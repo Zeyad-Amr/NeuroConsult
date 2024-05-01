@@ -17,7 +17,7 @@ import {
     Checkbox,
 } from "@mui/material";
 import React from "react";
-import { useTableContext } from "@/components/TableView/context";
+import { useTableContext } from "./context";
 
 interface Props {
     data: any[];
