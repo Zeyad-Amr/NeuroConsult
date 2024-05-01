@@ -3,6 +3,10 @@ import { Box, Button, Divider, FormHelperText, LinearProgress, Stack, TextField,
 import { Formik } from "formik";
 import * as Yup from "yup"
 import { useEffect, useState } from "react";
+import axios from "../../../core/api/api"
+import endPoints from "../../../core/api/endpoints"
+import { saveLocalStorageData } from "../../../core/services/shared-service";
+
 
 interface ILoginData {
   username: string
@@ -19,7 +23,15 @@ export default function LoginForm() {
   const [loading, setLoading] = useState(false)
 
   const handleFormSubmit = async (values: ILoginData) => {
-
+    axios.post(endPoints.login,values).then((res : any) => {
+      console.log(res);
+      console.log(res?.data);
+      if (res?.data) {
+        saveLocalStorageData('userData',res?.data)
+      }
+    }).catch((err : any) => {
+      console.log(err);
+    })
   }
   return (
     <Box sx={{ width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'flex-end', overflow: 'hidden', position: 'relative' }}>
@@ -89,8 +101,10 @@ export default function LoginForm() {
                       '& .MuiFilledInput-root': {
                         backgroundColor: '#f0f0f0',
                         borderRadius: '4px',
-                      
                         '&:hover': {
+                          backgroundColor: '#f0f0f0', // Change this to your desired hover fill color
+                        },
+                        '&:focus': {
                           backgroundColor: '#f0f0f0', // Change this to your desired hover fill color
                         },
                       },
@@ -104,14 +118,14 @@ export default function LoginForm() {
                     value={values.username}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    placeholder="Abdelrhman012"
+                    placeholder="Username"
                     helperText={
                       errors.username && touched.username ? errors.username : ""
                     }
                     error={errors.username && touched.username ? true : false}
-                    InputProps={{
-                      style: { padding: '0px' }, 
-                  }}
+                    inputProps={{
+                      style: { padding: '10px' },
+                    }}
                   />
                   <TextField
                     sx={{
@@ -120,8 +134,9 @@ export default function LoginForm() {
                         backgroundColor: '#f0f0f0',
                         borderRadius: '4px',
                         '&:hover': {
-                          backgroundColor: '#f0f0f0', // Change this to your desired hover fill color
+                          backgroundColor: '#f0f0f0',
                         },
+
                       },
 
                     }}
@@ -133,13 +148,15 @@ export default function LoginForm() {
                     value={values.password}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    placeholder="Enter your password"
+                    placeholder="Password"
                     type="password"
                     helperText={
                       errors.password && touched.password ? errors.password : ""
                     }
                     error={errors.password && touched.password ? true : false}
-
+                    inputProps={{
+                      style: { padding: '10px' },
+                    }}
                   />
                   <Button
                     color="secondary"
@@ -152,9 +169,11 @@ export default function LoginForm() {
                   >
                     Submit
                   </Button>
-                  <Typography sx={{ width: '100%', textAlign: 'center', color: 'white' }}>
-                    Don't Have an Account?
-                  </Typography>
+                  <a href="/signup" style={{ textDecoration: 'none' }}>
+                    <Typography sx={{ width: '100%', textAlign: 'center', color: 'white', textDecoration: 'underline', cursor: 'pointer' }}>
+                      Don't Have an Account?
+                    </Typography>
+                  </a>
                 </Stack>
                 <FormHelperText sx={{ color: "error.main", mt: 1, fontSize: "1rem", backgroundColor: 'transparent' }}>
                   {error}

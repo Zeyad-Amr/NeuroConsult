@@ -4,6 +4,7 @@ import { ReactElement } from "react";
 import { Route } from "react-router-dom";
 import ErrorPage from "../components/error-404/ErrorPage";
 import LoginPage from "../../modules/login/pages/LoginPage";
+import SIgnUp from "../../modules/login/pages/SIgnUp";
 
 
 
@@ -11,15 +12,19 @@ class RouterClass {
   static readonly routes: RouteModel[] = [
     {
       path: AppRoutes.home,
-      element: <ErrorPage/>,
+      element: <ErrorPage />,
     },
     {
       path: AppRoutes.login,
-      element: <LoginPage/>,
+      element: <LoginPage />,
+    },
+    {
+      path: AppRoutes.signup,
+      element: <SIgnUp />,
     },
     {
       path: AppRoutes.Error404,
-      element: <ErrorPage/>,
+      element: <ErrorPage />,
     },
   ];
 

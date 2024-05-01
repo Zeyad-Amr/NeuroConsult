@@ -1,5 +1,5 @@
 const endpoints = {
-    login : 'login',
+    login : 'user/login',
 };
 
 export default endpoints;
