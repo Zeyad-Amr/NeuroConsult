@@ -1,6 +1,6 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { PatientDto } from './create-patient.dto';
-import { $Enums, Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { IsArray, IsDateString, IsObject, IsOptional, IsPhoneNumber, IsString, MinLength } from 'class-validator';
 
 export class UpdatePatientDto {
@@ -29,7 +29,7 @@ export class UpdatePatientDto {
     @IsOptional()
     @IsArray()
     @IsString()
-    comorbidities?: Prisma.PatientCreatecomorbiditiesInput | $Enums.Comorbidity[];
+    comorbidities?: String[];
 
     @IsOptional()
     @IsString()
