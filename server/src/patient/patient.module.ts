@@ -6,8 +6,9 @@ import { PrismaModule } from '@/shared/prisma-client/prisma.module';
 import { UserModule } from '@/user/user.module';
 
 @Module({
-  imports: [PrismaModule, UserModule],
+  imports: [PrismaModule],
   controllers: [PatientController],
   providers: [PatientService, PatientRepo],
+  exports: [PatientService]
 })
 export class PatientModule { }

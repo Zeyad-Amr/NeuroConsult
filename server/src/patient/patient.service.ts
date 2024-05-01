@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePatientDto, PatientDto } from './dto/create-patient.dto';
+import { PatientDto } from './dto/create-patient.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 import { PatientRepo } from './patient.repo';
 

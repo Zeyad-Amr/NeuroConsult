@@ -36,17 +36,3 @@ export class PatientDto implements Prisma.PatientCreateInput {
     @IsString()
     bloodType: string;
 }
-
-
-export class CreatePatientDto {
-
-    @IsObject()
-    @ValidateNested()
-    @Type(() => PatientDto)
-    patient: PatientDto;
-
-    @IsObject()
-    @ValidateNested()
-    @Type(() => CreateUserDto)
-    auth: CreateUserDto
-}

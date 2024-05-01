@@ -1,10 +1,11 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { handleError } from '@/shared/http-error';
 import { LoginDTO } from './dto/login.dto';
 import { Public } from '@/shared/decorators/public.decorator';
+import { PatientService } from '@/patient/patient.service';
+import { SignupDto } from './dto/signup.dto';
 
 @Controller('user')
 export class UserController {
@@ -22,10 +23,18 @@ export class UserController {
   }
 
   @Public()
-  @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
+  @Post('signup')
+  async create(@Body() signupDto: SignupDto) {
     try {
-      return await this.userService.create(createUserDto);
+      const { patient, auth } = signupDto
+      const newUser = await this.userService.create({
+        ...auth, patient: {
+          create: {
+            ...patient
+          }
+        }
+      })
+      return newUser;
     } catch (error) {
       throw handleError(error);
     }

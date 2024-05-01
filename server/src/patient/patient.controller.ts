@@ -1,22 +1,20 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { PatientService } from './patient.service';
-import { CreatePatientDto } from './dto/create-patient.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 import { CreateUserDto } from '@/user/dto/create-user.dto';
 import { handleError } from '@/shared/http-error';
 import { UserService } from '@/user/user.service';
+import { PatientDto } from './dto/create-patient.dto';
 
 @Controller('patient')
 export class PatientController {
-  constructor(private readonly patientService: PatientService, private readonly userService: UserService) { }
+  constructor(private readonly patientService: PatientService) { }
 
   @Post()
-  async create(@Body() createPatientDto: CreatePatientDto) {
+  async create(@Body() patientDto: PatientDto) {
     try {
-      const { patient, auth } = createPatientDto
-      const newPatient = await this.patientService.create(patient)
-      const newUser = await this.userService.create({ ...auth, patientId: newPatient.id })
-      return newUser;
+      const newPatient = await this.patientService.create(patientDto)
+      return newPatient;
     } catch (error) {
       handleError(error)
     }

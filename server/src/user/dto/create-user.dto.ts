@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { IsDateString, IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, IsString, Matches, MinLength } from "class-validator";
+import { IsEmail, IsNotEmpty, IsOptional, IsString, Matches, MinLength } from "class-validator";
 
 export class CreateUserDto implements Prisma.UserCreateInput {
     @IsNotEmpty()
@@ -18,5 +18,5 @@ export class CreateUserDto implements Prisma.UserCreateInput {
     @IsEmail()
     email: string;
 
-    patientId?: string
+    patient?: Prisma.PatientCreateNestedOneWithoutUserInput;
 }
