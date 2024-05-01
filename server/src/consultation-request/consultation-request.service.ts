@@ -1,26 +1,56 @@
 import { Injectable } from '@nestjs/common';
 import { CreateConsultationRequestDto } from './dto/create-consultation-request.dto';
 import { UpdateConsultationRequestDto } from './dto/update-consultation-request.dto';
+import { ConsultatinReqRepo } from './consultation-request.repo';
 
 @Injectable()
 export class ConsultationRequestService {
-  create(createConsultationRequestDto: CreateConsultationRequestDto) {
-    return 'This action adds a new consultationRequest';
+  constructor(private constReq: ConsultatinReqRepo) { }
+
+  async create(constReqDto: CreateConsultationRequestDto) {
+    try {
+      const constReq = await this.constReq.create(constReqDto)
+      return constReq
+    } catch (error) {
+      throw error
+    }
   }
 
-  findAll() {
-    return `This action returns all consultationRequest`;
+  async findAll() {
+    try {
+      const constReqs = await this.constReq.getAll()
+      return constReqs
+    } catch (error) {
+      throw error
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} consultationRequest`;
+  async findOne(id: string) {
+    try {
+      const constReq = await this.constReq.getByID(id)
+      return constReq
+    } catch (error) {
+      throw error
+    }
   }
 
-  update(id: number, updateConsultationRequestDto: UpdateConsultationRequestDto) {
-    return `This action updates a #${id} consultationRequest`;
+  async update(id: string, data: UpdateConsultationRequestDto) {
+    try {
+      const constReq = await this.constReq.update(id, data)
+      return constReq
+    } catch (error) {
+      throw error
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} consultationRequest`;
+
+
+  async remove(id: string) {
+    try {
+      const constReq = await this.constReq.delete(id)
+      return constReq
+    } catch (error) {
+      throw error
+    }
   }
 }

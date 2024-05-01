@@ -2,33 +2,54 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ConsultationRequestService } from './consultation-request.service';
 import { CreateConsultationRequestDto } from './dto/create-consultation-request.dto';
 import { UpdateConsultationRequestDto } from './dto/update-consultation-request.dto';
+import { handleError } from '@/shared/http-error';
 
 @Controller('consultation-request')
 export class ConsultationRequestController {
-  constructor(private readonly consultationRequestService: ConsultationRequestService) {}
+  constructor(private readonly consultationRequestService: ConsultationRequestService) { }
 
   @Post()
-  create(@Body() createConsultationRequestDto: CreateConsultationRequestDto) {
-    return this.consultationRequestService.create(createConsultationRequestDto);
+  async create(@Body() createConsultationRequestDto: CreateConsultationRequestDto) {
+    try {
+      return await this.consultationRequestService.create(createConsultationRequestDto);
+    } catch (error) {
+      handleError(error)
+    }
   }
 
   @Get()
-  findAll() {
-    return this.consultationRequestService.findAll();
+  async findAll() {
+    try {
+      return await this.consultationRequestService.findAll();
+    } catch (error) {
+      handleError(error)
+    }
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.consultationRequestService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    try {
+      return await this.consultationRequestService.findOne(id);
+    } catch (error) {
+      handleError(error)
+    }
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateConsultationRequestDto: UpdateConsultationRequestDto) {
-    return this.consultationRequestService.update(+id, updateConsultationRequestDto);
+  async update(@Param('id') id: string, @Body() updateConsultationRequestDto: UpdateConsultationRequestDto) {
+    try {
+      return await this.consultationRequestService.update(id, updateConsultationRequestDto);
+    } catch (error) {
+      handleError(error)
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.consultationRequestService.remove(+id);
+  async remove(@Param('id') id: string) {
+    try {
+      return await this.consultationRequestService.remove(id);
+    } catch (error) {
+      handleError(error)
+    }
   }
 }
