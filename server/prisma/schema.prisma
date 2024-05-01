@@ -14,86 +14,111 @@ datasource db {
 }
 
 model User {
-  id                  String                @id @default(cuid())
-  name                String
-  username            String                @unique
-  password            String
-  email               String?               @unique
-  gender              String
-  birthDate           DateTime              @db.Date
-  phone               String                @unique
-  address             String?
-  type                String
-  createdAt           DateTime              @default(now())
-  updatedAt           DateTime              @updatedAt
-  ConsultationRequest ConsultationRequest[]
+  id       String  @id @default(cuid())
+  username String  @unique
+  password String
+  email    String? @unique
+  type     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  patient   Patient? @relation(fields: [patientId], references: [id])
+  patientId String?  @unique
 }
 
-model ConsultationRequest {
-  id          String       @id @default(cuid())
-  userId      String
-  user        User         @relation(fields: [userId], references: [id])
-  complaint   String
-  diagnosis   String?
-  vitalsId    String?      @unique
-  vitals      Vitals?      @relation(fields: [vitalsId], references: [id])
+model Patient {
+  id            String        @id @default(cuid())
+  name          String
+  gender        String
+  birthDate     DateTime      @db.Date
+  phone         String        @unique
+  address       String?
+  comorbidities Comorbidity[]
+  bloodType     String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user        User?
+  vitals      Vitals[]
   medications Medication[]
   allergies   Allergy[]
-  diseases    Disease[]
+  diagnosis   Diagnosis[]
   labs        Lab[]
   imaging     Imaging[]
-  status      String       @default("pending")
-  notes       String?
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
 }
 
 model Vitals {
-  id                  String               @id @default(cuid())
-  pulse               Int
-  bp                  String
-  respiration         Int
-  pso2                Int
-  ConsultationRequest ConsultationRequest?
+  id          String   @id @default(cuid())
+  pulse       Int
+  bp          String
+  respiration Int
+  pso2        Int
+  patient     Patient? @relation(fields: [patientId], references: [id])
+  patientId   String?
 }
 
 model Medication {
-  id                    String               @id @default(cuid())
-  medication            String
-  dose                  String
-  route                 String
-  time                  String
-  notes                 String?
-  ConsultationRequest   ConsultationRequest? @relation(fields: [consultationRequestId], references: [id])
-  consultationRequestId String?
+  id         String   @id @default(cuid())
+  medication String
+  dose       String
+  route      String
+  time       String
+  notes      String?
+  Patient    Patient? @relation(fields: [PatientId], references: [id])
+  PatientId  String?
 }
 
 model Allergy {
-  id                    String               @id @default(cuid())
-  name                  String
-  ConsultationRequest   ConsultationRequest? @relation(fields: [consultationRequestId], references: [id])
-  consultationRequestId String?
+  id        String   @id @default(cuid())
+  name      String
+  Patient   Patient? @relation(fields: [PatientId], references: [id])
+  PatientId String?
 }
 
-model Disease {
-  id                    String               @id @default(cuid())
-  name                  String
-  ConsultationRequest   ConsultationRequest? @relation(fields: [consultationRequestId], references: [id])
-  consultationRequestId String?
+model Diagnosis {
+  id        String   @id @default(cuid())
+  name      String
+  Patient   Patient? @relation(fields: [PatientId], references: [id])
+  PatientId String?
 }
 
 model Lab {
-  id                    String               @id @default(cuid())
-  name                  String
-  result                String
-  ConsultationRequest   ConsultationRequest? @relation(fields: [consultationRequestId], references: [id])
-  consultationRequestId String?
+  id        String   @id @default(cuid())
+  name      String
+  result    String
+  Patient   Patient? @relation(fields: [PatientId], references: [id])
+  PatientId String?
 }
 
 model Imaging {
-  id                    String               @id @default(cuid())
-  name                  String
-  result                String
-  ConsultationRequest   ConsultationRequest? @relation(fields: [consultationRequestId], references: [id])
-  consultationRequestId String?
+  id        String   @id @default(cuid())
+  name      String
+  result    String
+  Patient   Patient? @relation(fields: [PatientId], references: [id])
+  PatientId String?
+}
+
+enum Comorbidity {
+  HYPERTENSION
+  DIABETES
+  CARDIOVASCULAR_Diagnosis
+  OBESITY
+  CHRONIC_RESPIRATORY_CONDITION
+  IMMUNODEFICIENCY_DISORDER
+  CHRONIC_KIDNEY_Diagnosis
+  LIVER_Diagnosis
+  CANCER
+  AUTOIMMUNE_DISORDER
+  NEUROLOGICAL_DISORDER
+  GASTROINTESTINAL_DISORDER
+  ENDOCRINE_DISORDER
+  PSYCHIATRIC_DISORDER
+  BONE_AND_JOINT_DISORDER
+  INFECTIOUS_Diagnosis
+  HEMATOLOGICAL_DISORDER
+  METABOLIC_SYNDROME
+  SLEEP_APNEA
+  SUBSTANCE_USE_DISORDER
 }

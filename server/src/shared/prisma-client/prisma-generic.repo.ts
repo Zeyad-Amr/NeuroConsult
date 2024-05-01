@@ -2,11 +2,11 @@ import { Prisma } from '@prisma/client';
 import { PrismaService } from './prisma.service';
 import { Injectable } from '@nestjs/common';
 @Injectable()
-export class PrismaGenericRepo<N, T> {
+export class PrismaGenericRepo<N, T, I = any> {
   constructor(
     private modelName: string,
     private prisma: PrismaService,
-    protected includesObj?: any
+    protected includesObj?: I
   ) {
     this.modelName = modelName;
     this.includesObj = includesObj;

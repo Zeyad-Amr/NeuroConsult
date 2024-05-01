@@ -4,9 +4,9 @@ import { Injectable } from "@nestjs/common";
 import { Prisma, User } from "@prisma/client";
 
 @Injectable()
-export class UserRepo extends PrismaGenericRepo<Prisma.UserCreateInput, User> {
+export class UserRepo extends PrismaGenericRepo<Prisma.UserCreateInput, User, Prisma.UserInclude> {
     constructor(private prismaService: PrismaService) {
-        super('user', prismaService)
+        super('user', prismaService, { patient: true })
     }
 
     async getByUsername(username: string) {
