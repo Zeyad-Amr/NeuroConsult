@@ -5,9 +5,10 @@ import { UserModule } from './user/user.module';
 import { APP_GUARD } from '@nestjs/core';
 import { UserGuard } from './user/user.guard';
 import { PatientModule } from './patient/patient.module';
+import { ConsultationRequestModule } from './consultation-request/consultation-request.module';
 
 @Module({
-  imports: [UserModule, PatientModule],
+  imports: [UserModule, PatientModule, ConsultationRequestModule],
   controllers: [AppController],
   providers: [
     // {

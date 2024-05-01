@@ -28,25 +28,26 @@ model User {
 }
 
 model Patient {
-  id            String        @id @default(cuid())
+  id            String   @id @default(cuid())
   name          String
   gender        String
-  birthDate     DateTime      @db.Date
-  phone         String        @unique
+  birthDate     DateTime @db.Date
+  phone         String   @unique
   address       String?
-  comorbidities Comorbidity[]
+  comorbidities String[]
   bloodType     String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user        User?
-  vitals      Vitals[]
-  medications Medication[]
-  allergies   Allergy[]
-  diagnosis   Diagnosis[]
-  labs        Lab[]
-  imaging     Imaging[]
+  user           User?
+  vitals         Vitals[]
+  medications    Medication[]
+  allergies      Allergy[]
+  diagnosis      Diagnosis[]
+  labs           Lab[]
+  imaging        Imaging[]
+  ConsultatinReq ConsultatinReq[]
 }
 
 model Vitals {
@@ -66,59 +67,44 @@ model Medication {
   route      String
   time       String
   notes      String?
-  Patient    Patient? @relation(fields: [PatientId], references: [id])
-  PatientId  String?
+  patient    Patient? @relation(fields: [patientId], references: [id])
+  patientId  String?
 }
 
 model Allergy {
   id        String   @id @default(cuid())
   name      String
-  Patient   Patient? @relation(fields: [PatientId], references: [id])
-  PatientId String?
+  patient   Patient? @relation(fields: [patientId], references: [id])
+  patientId String?
 }
 
 model Diagnosis {
   id        String   @id @default(cuid())
   name      String
-  Patient   Patient? @relation(fields: [PatientId], references: [id])
-  PatientId String?
+  patient   Patient? @relation(fields: [patientId], references: [id])
+  patientId String?
 }
 
 model Lab {
   id        String   @id @default(cuid())
   name      String
   result    String
-  Patient   Patient? @relation(fields: [PatientId], references: [id])
-  PatientId String?
+  patient   Patient? @relation(fields: [patientId], references: [id])
+  patientId String?
 }
 
 model Imaging {
   id        String   @id @default(cuid())
   name      String
   result    String
-  Patient   Patient? @relation(fields: [PatientId], references: [id])
-  PatientId String?
+  patient   Patient? @relation(fields: [patientId], references: [id])
+  patientId String?
 }
 
-enum Comorbidity {
-  HYPERTENSION
-  DIABETES
-  CARDIOVASCULAR_Diagnosis
-  OBESITY
-  CHRONIC_RESPIRATORY_CONDITION
-  IMMUNODEFICIENCY_DISORDER
-  CHRONIC_KIDNEY_Diagnosis
-  LIVER_Diagnosis
-  CANCER
-  AUTOIMMUNE_DISORDER
-  NEUROLOGICAL_DISORDER
-  GASTROINTESTINAL_DISORDER
-  ENDOCRINE_DISORDER
-  PSYCHIATRIC_DISORDER
-  BONE_AND_JOINT_DISORDER
-  INFECTIOUS_Diagnosis
-  HEMATOLOGICAL_DISORDER
-  METABOLIC_SYNDROME
-  SLEEP_APNEA
-  SUBSTANCE_USE_DISORDER
+model ConsultatinReq {
+  id        String   @id @default(cuid())
+  complaint String
+  result    String
+  patient   Patient? @relation(fields: [patientId], references: [id])
+  patientId String?
 }
