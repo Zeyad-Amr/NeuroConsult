@@ -35,10 +35,10 @@ export class PatientService {
   }
 
 
-  async update(id: string, updatePatientDto: UpdatePatientDto) {
+  async addMedicalData(id: string, updatePatientDto: UpdatePatientDto) {
     try {
-      // const patient = await this.patientRepo.update(id,updatePatientDto)
-      return `This should retun update patient`
+      const patient = await this.patientRepo.addMedicalData(id, updatePatientDto)
+      return patient
     } catch (error) {
       throw error
     }
