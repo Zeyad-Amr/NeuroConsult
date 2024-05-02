@@ -1,0 +1,127 @@
+.page_404 {
+  padding: 40px 0;
+  background: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 100%;
+}
+
+.four_zero_four_bg {
+  background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
+  height: 400px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: relative;
+}
+
+.four_zero_four_bg h2 {
+  font-size: 80px;
+  color: #3d4d5a;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -160%);
+
+}
+
+.four_zero_four_bg h3 {
+  font-size: 80px;
+}
+
+.link_404 {
+  color: #fff !important;
+  padding: 10px 20px;
+  background: #5dbc62;
+  margin: 20px 0;
+  text-decoration: none;
+  border-radius: 8px;
+}
+
+.contant_box_404 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: #3d4d5a;
+  margin: 1rem;
+}
+
+.contant_box_404 p {
+  font-size: 3.5vw;
+  margin-bottom: 0.6rem;
+  text-transform: capitalize;
+  text-align: center;
+}
+
+.contant_box_404 span {
+  font-size: 1.5vw;
+  text-transform: capitalize;
+  text-align: center;
+}
+
+
+@media only screen and (max-width: 1400px) {
+  .contant_box_404 p {
+    font-size: 50px;
+  }
+  .contant_box_404 span {
+    font-size: 35px;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .contant_box_404 p {
+    font-size: 50px;
+  }
+  .contant_box_404 span {
+    font-size: 35px;
+  }
+}
+
+@media only screen and (max-width: 930px) {
+  .contant_box_404 p {
+    font-size: 50px;
+  }
+  .contant_box_404 span {
+    font-size: 35px;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .contant_box_404 p {
+    font-size: 45px;
+  }
+  .contant_box_404 span {
+    font-size: 30px;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .contant_box_404 p {
+    font-size: 40px;
+  }
+  .contant_box_404 span {
+    font-size: 25px;
+  }
+}
+
+@media only screen and (max-width: 390px) {
+  .contant_box_404 p {
+    font-size: 30px;
+  }
+  .contant_box_404 span {
+    font-size: 25px;
+  }
+}
+
+@media only screen and (max-width: 430px) {
+  .contant_box_404 p {
+    font-size: 30px;
+  }
+  .contant_box_404 span {
+    font-size: 20px;
+  }
+}
