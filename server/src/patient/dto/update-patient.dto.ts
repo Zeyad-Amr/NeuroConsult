@@ -7,20 +7,20 @@ export class UpdatePatientDto {
     @IsOptional()
     @IsString()
     @MinLength(3)
-    name: string;
+    name?: string;
 
     @IsOptional()
     @IsString()
     @MinLength(3)
-    gender: string;
+    gender?: string;
 
     @IsDateString()
     @IsOptional()
-    birthDate: string | Date;
+    birthDate?: string | Date;
 
     @IsOptional()
     @IsPhoneNumber()
-    phone: string;
+    phone?: string;
 
     @IsOptional()
     @IsString()
@@ -33,7 +33,7 @@ export class UpdatePatientDto {
 
     @IsOptional()
     @IsString()
-    bloodType: string;
+    bloodType?: string;
 
     @IsOptional()
     @IsObject()

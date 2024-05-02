@@ -3,15 +3,19 @@ import { ConsultationRequestService } from './consultation-request.service';
 import { CreateConsultationRequestDto } from './dto/create-consultation-request.dto';
 import { UpdateConsultationRequestDto } from './dto/update-consultation-request.dto';
 import { handleError } from '@/shared/http-error';
+import { PatientService } from '@/patient/patient.service';
 
 @Controller('consultation-request')
 export class ConsultationRequestController {
-  constructor(private readonly consultationRequestService: ConsultationRequestService) { }
+  constructor(private readonly consultationRequestService: ConsultationRequestService,
+    private patientService: PatientService) { }
 
   @Post()
   async create(@Body() createConsultationRequestDto: CreateConsultationRequestDto) {
     try {
-      return await this.consultationRequestService.create(createConsultationRequestDto);
+      const { vitals, patientId, ...restData } = createConsultationRequestDto
+      const addVitals = await this.patientService.addMedicalData(patientId, { vitals })
+      return await this.consultationRequestService.create({ ...restData, patientId });
     } catch (error) {
       handleError(error)
     }
