@@ -1,0 +1,9 @@
+<script type="text/javascript">
+    const eventSource = new EventSource('/api/sse');
+
+    eventSource.onmessage = function (event) {
+        const message = document.createElement('li');
+        message.innerText = event.data;
+        document.body.appendChild(message);
+    };
+</script>
