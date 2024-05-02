@@ -9,4 +9,11 @@ export class ConsultatinReqRepo extends PrismaGenericRepo<Prisma.ConsultatinReqC
         super('consultatinReq', prismaService, { patient: true })
     }
 
+    async addDoctorResult(id: string, result: string) {
+        return await this.prismaService.consultatinReq.update({
+            where: { id },
+            data: { result: result }
+        })
+    }
+
 }

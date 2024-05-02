@@ -34,9 +34,9 @@ export class ConsultationRequestService {
     }
   }
 
-  async update(id: string, data: UpdateConsultationRequestDto) {
+  async update(id: string, data: string) {
     try {
-      const constReq = await this.constReq.update(id, data)
+      const constReq = await this.
       return constReq
     } catch (error) {
       throw error
