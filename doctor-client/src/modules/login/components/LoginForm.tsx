@@ -6,8 +6,6 @@ import { useEffect, useState } from "react";
 import axios from "../../../core/api/api"
 import endPoints from "../../../core/api/endpoints"
 import { saveLocalStorageData } from "../../../core/services/shared-service";
-import Alert from '@mui/material/Alert';
-import AlertService from "../../../core/services/alert-service";
 
 
 interface ILoginData {
@@ -21,16 +19,17 @@ const loginSchema = new Yup.ObjectSchema({
 })
 
 export default function LoginForm() {
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
+
   const handleFormSubmit = async (values: ILoginData) => {
     axios.post(endPoints.login,values).then((res : any) => {
       console.log(res);
       console.log(res?.data);
       if (res?.data) {
         saveLocalStorageData('userData',res?.data)
-        AlertService.showAlert('Logined successfully', 'success');
       }
     }).catch((err : any) => {
-      AlertService.showAlert(`${err?.message}`, "error");
       console.log(err);
     })
   }
@@ -165,6 +164,7 @@ export default function LoginForm() {
                     variant="contained"
                     disableElevation
                     type="submit"
+                    disabled={loading}
                     sx={{ background: 'linear-gradient(90deg, #29f19c, #02a1f9)' }}
                   >
                     Submit
@@ -175,12 +175,16 @@ export default function LoginForm() {
                     </Typography>
                   </a>
                 </Stack>
+                <FormHelperText sx={{ color: "error.main", mt: 1, fontSize: "1rem", backgroundColor: 'transparent' }}>
+                  {error}
+                </FormHelperText>
               </Box>
             )}
 
           </Formik>
 
         </Box>
+        <LinearProgress color="info" sx={{ display: loading ? "block" : "none" }} />
       </Box>
     </Box>
   )
