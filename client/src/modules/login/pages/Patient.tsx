@@ -1,5 +1,5 @@
 import { Box, Button, Grid, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CustomTextField from '../../../core/components/CustomTextField'
 import { Formik } from 'formik'
 import Header from '../../../core/components/Header'
@@ -7,10 +7,15 @@ import DescriptionRoundedIcon from '@mui/icons-material/DescriptionRounded';
 import BiotechRoundedIcon from '@mui/icons-material/BiotechRounded';
 import RadarRoundedIcon from '@mui/icons-material/RadarRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+import axios from '../../../core/api/api'
+import endPoints from '../../../core/api/endpoints'
+import AlertService from '../../../core/services/alert-service'
+import { getLocalStorageDataByKey, logOut } from '../../../core/services/shared-service'
 
 const Patient = () => {
 
     const [completeData, setCompleteData] = useState<boolean>(false)
+    const [userLoginedData, setUserLoginedData] = useState<any>()
 
     interface User {
         name: string;
@@ -50,6 +55,37 @@ const Patient = () => {
         consultationRequest: ''
     };
 
+    useEffect(() => {
+      let userData = getLocalStorageDataByKey('userData')
+      setUserLoginedData(userData)
+      console.log(userData,'userData');
+    }, [])
+
+   const handleConsultationRequestForm = async (values : VitalSigns) => {
+    const submitObject = {
+        patientId: userLoginedData?.user?.id,
+        complaint: values.consultationRequest,
+        vitals:{
+            pulse: values.pulse,
+            bp: values.bp,
+            respiration: values.respiration ,
+            pso2: values.pso2
+        }
+    }
+    console.log(submitObject,'submitObject');
+    
+        axios.post(endPoints.consultationReq,submitObject).then((res : any) => {
+          console.log(res);
+          console.log(res?.data);
+          if (res?.data) {
+            AlertService.showAlert('Consultation request is added successfully', 'success');
+          }
+        }).catch((err : any) => {
+          AlertService.showAlert(`${err?.message}`, "error");
+          console.log(err);
+        })
+    }
+
     return (
         <Box sx={{
             width: '100vw', height: '100vh', position: 'relative', background: 'linear-gradient(45deg, #29f19c, #02a1f9)',
@@ -73,9 +109,9 @@ const Patient = () => {
                         }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <Typography sx={{ fontSize: '2rem', marginBottom: '1rem' }}>
-                                    Hello <span style={{ fontWeight: '600', color: 'black' }}>Abdelrhman Yaser</span>
+                                    Hello <span style={{ fontWeight: '600', color: 'black' }}>{ userLoginedData?.user?.username }</span>
                                 </Typography>
-                                <Box sx={{ display: 'flex', cursor: 'pointer', alignItems: 'center', fontSize: '1.2rem' }}>
+                                <Box onClick={() => logOut()} sx={{ display: 'flex', cursor: 'pointer', alignItems: 'center', fontSize: '1.2rem' }}>
                                     <Typography sx={{ fontSize: 'inherit', marginRight: '0.5rem' }}>Log Out</Typography>
                                     <LogoutRoundedIcon sx={{ fontSize: 'inherit', }} />
                                 </Box>
@@ -342,6 +378,7 @@ const Patient = () => {
                                 initialValues={vitalsInitialValues}
                                 onSubmit={(values) => {
                                     console.log(values);
+                                    handleConsultationRequestForm(values);
                                 }}
                             >
                                 {({

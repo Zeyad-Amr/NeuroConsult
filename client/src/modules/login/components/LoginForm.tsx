@@ -8,6 +8,7 @@ import endPoints from "../../../core/api/endpoints"
 import { saveLocalStorageData } from "../../../core/services/shared-service";
 import Alert from '@mui/material/Alert';
 import AlertService from "../../../core/services/alert-service";
+import AppRoutes from "../../../core/routes/AppRoutes";
 
 
 interface ILoginData {
@@ -27,6 +28,7 @@ export default function LoginForm() {
       console.log(res?.data);
       if (res?.data) {
         saveLocalStorageData('userData',res?.data)
+        window.location.href = `${AppRoutes.patient}`;
         AlertService.showAlert('Logined successfully', 'success');
       }
     }).catch((err : any) => {

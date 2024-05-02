@@ -13,7 +13,7 @@ class RouterClass {
   static readonly routes: RouteModel[] = [
     {
       path: AppRoutes.home,
-      element: <ErrorPage />,
+      element: <LoginPage />,
     },
     {
       path: AppRoutes.login,
@@ -24,7 +24,7 @@ class RouterClass {
       element: <SIgnUp />,
     },
     {
-      path: AppRoutes.myprofile,
+      path: AppRoutes.patient,
       element: <Patient />,
     },
     {
