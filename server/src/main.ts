@@ -14,6 +14,10 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
+
+
+
+
   app.useGlobalFilters(new HttpExceptionFilter());
   await app.listen(port);
 }
