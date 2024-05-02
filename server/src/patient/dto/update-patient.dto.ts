@@ -29,7 +29,7 @@ export class UpdatePatientDto {
     @IsOptional()
     @IsArray()
     @IsString()
-    comorbidities?: String[];
+    comorbidities?: string[];
 
     @IsOptional()
     @IsString()
@@ -41,7 +41,7 @@ export class UpdatePatientDto {
 
     @IsOptional()
     @IsObject()
-    medications?: Prisma.MedicationCreateInput;
+    medications?: string[];
 
     @IsOptional()
     @IsObject()
