@@ -1,5 +1,5 @@
 import { Box, Grid, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Formik } from 'formik'
 import Header from '../../core/components/Header'
 import CustomTextField from '../../core/components/CustomTextField'
@@ -7,12 +7,21 @@ import Requests from './components/requests-table'
 import Table from './components/requests-table/Table'
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import Data from './components/response/Data'
+import { getLocalStorageDataByKey, logOut } from '../../core/services/shared-service'
 
 const Patients = () => {
     const [currentPatient, setCurrentPatient] = useState<number>(0)
+    const [userLoginedData, setUserLoginedData] = useState<any>();
+
     const getCurrentPatient=(currentPatient:number) => {
         setCurrentPatient(currentPatient)
     }
+
+    useEffect(() => {
+        let userData = getLocalStorageDataByKey("userData");
+        setUserLoginedData(userData);
+      }, []);
+
     const data = [
         {
             PID: {
@@ -94,10 +103,10 @@ const Patients = () => {
                         }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <Typography sx={{ fontSize: '2rem' }}>
-                                    Hello <span style={{ fontWeight: '600', color: 'black' }}>Dr. Abdelrhman Yaser</span>
+                                    Hello <span style={{ fontWeight: '600', color: 'black' }}>{userLoginedData?.user?.username}</span>
                                 </Typography>
                                 <Box
-                                    // onClick={() => logOut()}
+                                    onClick={() => logOut()}
                                     sx={{ display: 'flex', cursor: 'pointer', alignItems: 'center', fontSize: '1.2rem' }}>
                                     <Typography sx={{ fontSize: 'inherit', marginRight: '0.5rem' }}>Log Out</Typography>
                                     <LogoutRoundedIcon sx={{ fontSize: 'inherit', }} />

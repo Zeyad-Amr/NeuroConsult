@@ -16,7 +16,7 @@ export class DoctorUpdateDto {
     ResponseMessage: string;
 }
 
-export interface Consultation {
+export class Consultation {
     vitals: Vitals;
     consultationReqs: ConsultationReqs;
 }

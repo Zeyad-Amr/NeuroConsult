@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import axios from "../../../core/api/api"
 import endPoints from "../../../core/api/endpoints"
 import { saveLocalStorageData } from "../../../core/services/shared-service";
+import AlertService from "../../../core/services/alert-service";
+import AppRoutes from "../../../core/routes/AppRoutes";
 
 
 interface ILoginData {
@@ -28,9 +30,14 @@ export default function LoginForm() {
       console.log(res?.data);
       if (res?.data) {
         saveLocalStorageData('userData',res?.data)
+        window.location.href = `${AppRoutes.doctor}`;
+        AlertService.showAlert('Logined successfully', 'success');
+      } else {
+        AlertService.showAlert(`${res?.message}`, "error");
       }
     }).catch((err : any) => {
       console.log(err);
+      AlertService.showAlert(`${err?.message}`, "error");
     })
   }
   return (
@@ -169,11 +176,11 @@ export default function LoginForm() {
                   >
                     Submit
                   </Button>
-                  <a href="/signup" style={{ textDecoration: 'none' }}>
+                  {/* <a href="/signup" style={{ textDecoration: 'none' }}>
                     <Typography sx={{ width: '100%', textAlign: 'center', color: 'white', textDecoration: 'underline', cursor: 'pointer' }}>
                       Don't Have an Account?
                     </Typography>
-                  </a>
+                  </a> */}
                 </Stack>
                 <FormHelperText sx={{ color: "error.main", mt: 1, fontSize: "1rem", backgroundColor: 'transparent' }}>
                   {error}

@@ -11,3 +11,22 @@ export class CreateConsultationRequestDto {
     @IsOptional()
     vitals?
 }
+
+export class ConsultationResponseDto {
+    vitals: Vitals;
+
+    consultationReqs: ConsultationReqs;
+}
+
+interface Vitals {
+    id: string;
+    pulse: number;
+    bp: string;
+    respiration: number;
+    pso2: number;
+}
+
+interface ConsultationReqs {
+    id: string;
+    complaint: string;
+}
