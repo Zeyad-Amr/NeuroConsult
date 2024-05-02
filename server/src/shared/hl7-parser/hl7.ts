@@ -84,7 +84,7 @@ function convertJSONToHL7(json: any): string {
 
     const consultationReqs = json['consultationReqs'];
     if (consultationReqs) {
-        hl7Message += `CON|1|${consultationReqs.id}|${consultationReqs.complaint}|\n`;
+        hl7Message += `CON|1|${consultationReqs.id}|${consultationReqs.complaint}|${consultationReqs.result}|\n`;
     }
 
     return hl7Message;
@@ -160,7 +160,8 @@ export function parseImaging(fields: string[]): any {
 export function parseConsultationRequests(fields: string[]): any {
     return {
         id: fields[2],
-        complaint: fields[3]
+        complaint: fields[3],
+        result: fields[4]
     };
 }
 
@@ -210,7 +211,8 @@ const jsonExample = {
     },
     "consultationReqs": {
         "id": "consultationReq1",
-        "complaint": "Headache"
+        "complaint": "Headache",
+        "result": "No abnormalities detected"
     }
 };
 
