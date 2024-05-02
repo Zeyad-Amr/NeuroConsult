@@ -20,7 +20,7 @@ export class PatientDto implements Prisma.PatientCreateInput {
     birthDate: string | Date;
 
     @IsNotEmpty()
-    @IsPhoneNumber()
+    @IsString()
     phone: string;
 
     @IsNotEmpty()

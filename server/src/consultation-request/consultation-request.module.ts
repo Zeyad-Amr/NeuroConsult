@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConsultationRequestService } from './consultation-request.service';
 import { ConsultationRequestController } from './consultation-request.controller';
+import { ConsultatinReqRepo } from './consultation-request.repo';
+import { PrismaModule } from '@/shared/prisma-client/prisma.module';
 
 @Module({
+  imports: [PrismaModule],
   controllers: [ConsultationRequestController],
-  providers: [ConsultationRequestService],
+  providers: [ConsultationRequestService, ConsultatinReqRepo],
 })
-export class ConsultationRequestModule {}
+export class ConsultationRequestModule { }
