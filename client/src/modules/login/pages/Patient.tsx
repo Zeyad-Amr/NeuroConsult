@@ -1,5 +1,5 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CustomTextField from "../../../core/components/CustomTextField";
 import { Formik } from "formik";
 import Header from "../../../core/components/Header";
@@ -59,12 +59,29 @@ const Patient = () => {
     pso2: 95,
     consultationRequest: "",
   };
+  const patientOmElData : any = useRef();
 
   useEffect(() => {
     let userData = getLocalStorageDataByKey("userData");
     setUserLoginedData(userData);
+    setpatientData(userData?.user.patient);
     console.log(userData?.user.patientId, "userData.patientId");
-    getAllPatientsData();
+    console.log(userData?.user.patient, "userData.patientId");
+    patientOmElData.current = userData?.user.patient
+    let value = patientOmElData.current
+    console.log(value, "value");
+    // getAllPatientsData();
+    setPatientDataInitialValues({
+        birthDate: value?.birthDate,
+        bloodType: value?.bloodType,
+        comorbidities: value?.comorbidities?.join(",  "),
+        gender: value?.gender,
+        Medication: value?.Medication?.join(",  "),
+        name: value?.name,
+        phone: value?.phone,
+        address: value?.address,
+      });
+    //   setPatientDataInitialValues(userData?.user.patient)
   }, []);
 
   const getAllPatientsData = () => {
