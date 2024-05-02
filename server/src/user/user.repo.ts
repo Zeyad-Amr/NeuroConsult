@@ -23,7 +23,8 @@ export class UserRepo extends PrismaGenericRepo<Prisma.UserCreateInput, User, Pr
     async getByUsername(username: string) {
         try {
             const user = await this.prismaService.user.findUnique({
-                where: { username }
+                where: { username },
+                include: this.includesObj
             })
             return user
         } catch (error) {
