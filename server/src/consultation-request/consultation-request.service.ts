@@ -36,7 +36,7 @@ export class ConsultationRequestService {
 
   async update(id: string, data: string) {
     try {
-      const constReq = await this.
+      const constReq = await this.constReq.addDoctorResult(id, data)
       return constReq
     } catch (error) {
       throw error
