@@ -11,10 +11,12 @@ export class PatientController {
   constructor(private readonly doctor: DoctorService, private readonly prisma: PrismaService) {
     const server = net.createServer((socket) => {
       socket.on('data', async (data) => {
+        console.log('Data received from patient Server:', data.toString());
         let jsonReq = parseHL7ToJSON(data.toString());
         const d = new Consultation();
         d.consultationReqs = jsonReq.consultationReqs;
         d.vitals = jsonReq.vitals;
+        console.log(d.consultationReqs.id)
 
         await this.doctor.create(d);
       });
@@ -46,7 +48,12 @@ export class PatientController {
       const client = new net.Socket();
 
       client.connect(3001, 'localhost', () => {
-        const toSend = convertJSONToHL7(req);
+        const jsonRes = JSON.parse(req.requestMetadata);
+        jsonRes.consultationReqs.result = req.DoctorResponse;
+        jsonRes.PID = undefined
+        const toSend = convertJSONToHL7(jsonRes);
+        console.log(jsonRes.consultationReqs)
+        console.log("to send", toSend)
         client.write(toSend);
       });
 

@@ -9,23 +9,23 @@ export function parseHL7ToJSON(hl7Message: string): any {
         if (segmentName === 'MSH') {
             // Parse MSH segment if needed
         } else if (segmentName === 'PID') {
-            json['PID'] = this.parsePID(fields);
+            json['PID'] = parsePID(fields);
         } else if (segmentName === 'COM') {
-            json['comorbidities'] = this.parseCustomSegment(fields);
+            json['comorbidities'] = parseCustomSegment(fields);
         } else if (segmentName === 'VIT') {
-            json['vitals'] = this.parseVitals(fields);
+            json['vitals'] = parseVitals(fields);
         } else if (segmentName === 'MED') {
-            json['medications'] = this.parseMedications(fields);
+            json['medications'] = parseMedications(fields);
         } else if (segmentName === 'ALG') {
-            json['allergies'] = this.parseAllergies(fields);
+            json['allergies'] = parseAllergies(fields);
         } else if (segmentName === 'DG') {
-            json['diagnosis'] = this.parseDiagnosis(fields);
+            json['diagnosis'] = parseDiagnosis(fields);
         } else if (segmentName === 'LAB') {
-            json['labs'] = this.parseLabs(fields);
+            json['labs'] = parseLabs(fields);
         } else if (segmentName === 'IMG') {
-            json['imaging'] = this.parseImaging(fields);
+            json['imaging'] = parseImaging(fields);
         } else if (segmentName === 'CON') {
-            json['consultationReqs'] = this.parseConsultationRequests(fields);
+            json['consultationReqs'] = parseConsultationRequests(fields);
         }
         // Add parsing for other segments here if needed
     });
@@ -41,8 +41,9 @@ export function convertJSONToHL7(json: any): string {
 
     // Construct PID segment
     const pidJson = json['PID'];
-    hl7Message += 'PID|1|' + (pidJson['id'] || '') + '|||' + (pidJson['name'] || '') + '||' + (pidJson['dateOfBirth'] || '') + '|' + (pidJson['gender'] || '') + '|||' + (pidJson['address'] || '') + '||' + (pidJson['phone'] || '') + '|' + (pidJson['bloodType'] || '') + '|\n';
-
+    if (pidJson) {
+        hl7Message += 'PID|1|' + (pidJson['id'] || '') + '|||' + (pidJson['name'] || '') + '||' + (pidJson['dateOfBirth'] || '') + '|' + (pidJson['gender'] || '') + '|||' + (pidJson['address'] || '') + '||' + (pidJson['phone'] || '') + '|' + (pidJson['bloodType'] || '') + '|\n';
+    }
     // Construct COM segment if comorbidities exist
     const comorbidities = json['comorbidities'];
     if (comorbidities && comorbidities.length > 0) {
