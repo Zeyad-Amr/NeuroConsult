@@ -5,6 +5,7 @@ import { Route } from "react-router-dom";
 import ErrorPage from "../components/error-404/ErrorPage";
 import LoginPage from "../../modules/login/pages/LoginPage";
 import SIgnUp from "../../modules/login/pages/SIgnUp";
+import Patients from "../../modules/patients/Patients";
 
 
 
@@ -21,6 +22,10 @@ class RouterClass {
     {
       path: AppRoutes.signup,
       element: <SIgnUp />,
+    },
+    {
+      path: AppRoutes.patients,
+      element: <Patients />,
     },
     {
       path: AppRoutes.Error404,
