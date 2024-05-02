@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Sse, Redirect } from '@nestjs/common';
 import { handleError } from '@/shared/http-error';
-import { Consultation, DoctorDto } from './dto/create-patient.dto';
+import { Consultation, DoctorDto, DoctorUpdateDto } from './dto/create-patient.dto';
 import { DoctorService } from './doctor.service';
 import { PrismaService } from '@/shared/prisma-client/prisma.service';
 import * as net from 'net';
@@ -29,7 +29,7 @@ export class PatientController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() dt: DoctorDto) {
+  async update(@Param('id') id: string, @Body() dt: DoctorUpdateDto) {
     try {
       const res = await this.doctor.update(id, dt);
       this.sendResult(res);
