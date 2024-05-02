@@ -2,7 +2,7 @@ class AppRoutes {
   static readonly home = "/";
   static readonly login = "/login";
   static readonly signup = "/signup";
-  static readonly patients = "/patients";
+  static readonly doctor = "/doctor";
   static readonly Error404 = "*";
 
 }

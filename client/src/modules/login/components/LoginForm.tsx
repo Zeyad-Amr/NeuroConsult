@@ -30,6 +30,8 @@ export default function LoginForm() {
         saveLocalStorageData('userData',res?.data)
         window.location.href = `${AppRoutes.patient}`;
         AlertService.showAlert('Logined successfully', 'success');
+      } else {
+        AlertService.showAlert(`${res?.message}`, "error");
       }
     }).catch((err : any) => {
       AlertService.showAlert(`${err?.message}`, "error");
