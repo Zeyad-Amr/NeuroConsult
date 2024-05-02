@@ -6,7 +6,18 @@ import { Prisma, User } from "@prisma/client";
 @Injectable()
 export class UserRepo extends PrismaGenericRepo<Prisma.UserCreateInput, User, Prisma.UserInclude> {
     constructor(private prismaService: PrismaService) {
-        super('user', prismaService, { patient: true })
+        super('user', prismaService, {
+            patient: {
+                include: {
+                    allergies: true,
+                    diagnosis: true,
+                    imaging: true,
+                    labs: true,
+                    vitals: true,
+                    user: true,
+                }
+            }
+        })
     }
 
     async getByUsername(username: string) {
