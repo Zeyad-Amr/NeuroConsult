@@ -50,10 +50,10 @@ model Patient {
 
 model Vitals {
   id          String   @id @default(cuid())
-  pulse       Int
-  bp          String
-  respiration Int
-  pso2        Int
+  pulse       Int?
+  bp          String?
+  respiration Int?
+  pso2        Int?
   patient     Patient? @relation(fields: [patientId], references: [id])
   patientId   String?
 }

@@ -33,7 +33,7 @@ export function parseHL7ToJSON(hl7Message: string): any {
     return json;
 }
 
-function convertJSONToHL7(json: any): string {
+export function convertJSONToHL7(json: any): string {
     let hl7Message = '';
 
     // Construct MSH segment
@@ -84,7 +84,7 @@ function convertJSONToHL7(json: any): string {
 
     const consultationReqs = json['consultationReqs'];
     if (consultationReqs) {
-        hl7Message += `CON|1|${consultationReqs.id}|${consultationReqs.complaint}|\n`;
+        hl7Message += `CON|1|${consultationReqs.id}|${consultationReqs.complaint}|${consultationReqs.result}|\n`;
     }
 
     return hl7Message;
@@ -160,7 +160,8 @@ export function parseImaging(fields: string[]): any {
 export function parseConsultationRequests(fields: string[]): any {
     return {
         id: fields[2],
-        complaint: fields[3]
+        complaint: fields[3],
+        result: fields[4]
     };
 }
 
@@ -210,7 +211,8 @@ const jsonExample = {
     },
     "consultationReqs": {
         "id": "consultationReq1",
-        "complaint": "Headache"
+        "complaint": "Headache",
+        "result": "No abnormalities detected"
     }
 };
 
@@ -221,5 +223,4 @@ const jsonExample = {
 // // Parse HL7 to JSON
 // const jsonFromHL7 = HL7Parser.parseHL7ToJSON(hl7FromJSON);
 // console.log('JSON from HL7:', jsonFromHL7);
-
 

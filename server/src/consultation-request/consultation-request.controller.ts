@@ -1,11 +1,11 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ConsultationRequestService } from './consultation-request.service';
-import { CreateConsultationRequestDto } from './dto/create-consultation-request.dto';
+import { ConsultationResponseDto, CreateConsultationRequestDto } from './dto/create-consultation-request.dto';
 import { UpdateConsultationRequestDto } from './dto/update-consultation-request.dto';
 import { handleError } from '@/shared/http-error';
 import { PatientService } from '@/patient/patient.service';
 import * as net from 'net';
-import { parseHL7ToJSON } from '@/shared/hl7-parser/hl7';
+import { convertJSONToHL7, parseHL7ToJSON } from '@/shared/hl7-parser/hl7';
 
 @Controller('consultation-request')
 export class ConsultationRequestController {
@@ -26,7 +26,7 @@ export class ConsultationRequestController {
       });
     });
 
-    server.listen(3002, 'localhost', () => {
+    server.listen(3001, 'localhost', () => {
       console.log('Doctor Server is listening on port 3002');
     });
   }
@@ -38,8 +38,13 @@ export class ConsultationRequestController {
     try {
       const { vitals, patientId, ...restData } = createConsultationRequestDto
       const addVitals = await this.patientService.addMedicalData(patientId, { vitals })
-      this.sendRequestToDoctor(createConsultationRequestDto)
-      return await this.consultationRequestService.create({ ...restData, patientId });
+      console.log("Diaa")
+      const result = await this.consultationRequestService.create({ ...restData, patientId });
+
+      const toSent = new ConsultationResponseDto()
+      toSent.vitals = vitals
+      toSent.consultationReqs = result
+      this.sendRequestToDoctor(toSent)
     } catch (error) {
       handleError(error)
     }
@@ -74,15 +79,16 @@ export class ConsultationRequestController {
   }
 
 
-  async sendRequestToDoctor(req: CreateConsultationRequestDto) {
+  async sendRequestToDoctor(req: ConsultationResponseDto) {
     try {
       const client = new net.Socket();
 
       client.connect(3002, 'localhost', () => {
-        ConvertJsonToHL7(req)
+
+        const res = convertJSONToHL7(req)
         // TODO: here the req (contains the consultation data that should be sent to the doctor (check the patch method above to see the data))
         // the data that will be written it's just the hl7 message (so parse it to hl7 message before sending)
-        client.write('HL7 Message');
+        client.write(res);
       });
 
       client.on('close', () => {

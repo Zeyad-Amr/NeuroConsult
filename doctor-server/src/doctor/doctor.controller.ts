@@ -4,7 +4,7 @@ import { Consultation, DoctorDto, DoctorUpdateDto } from './dto/create-patient.d
 import { DoctorService } from './doctor.service';
 import { PrismaService } from '@/shared/prisma-client/prisma.service';
 import * as net from 'net';
-import { parseHL7ToJSON } from '@/shared/hl7-parser/hl7';
+import { convertJSONToHL7, parseHL7ToJSON } from '@/shared/hl7-parser/hl7';
 
 @Controller('consultation')
 export class PatientController {
@@ -12,10 +12,11 @@ export class PatientController {
     const server = net.createServer((socket) => {
       socket.on('data', async (data) => {
         let jsonReq = parseHL7ToJSON(data.toString());
-        const d = new DoctorDto();
-        // d.hl7Message = jsonReq
-        // d.PID = jsonReq.PID;
-        await this.doctor.create(new DoctorDto());
+        const d = new Consultation();
+        d.consultationReqs = jsonReq.consultationReqs;
+        d.vitals = jsonReq.vitals;
+
+        await this.doctor.create(d);
       });
 
       socket.on('close', () => {
@@ -45,9 +46,8 @@ export class PatientController {
       const client = new net.Socket();
 
       client.connect(3001, 'localhost', () => {
-        // TODO: here the req (contains the consultation result (check the patch method above to see the data))
-        // the data that will be written it's just the hl7 message
-        client.write('HL7 Message');
+        const toSend = convertJSONToHL7(req);
+        client.write(toSend);
       });
 
       client.on('close', () => {
