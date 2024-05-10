@@ -16,7 +16,16 @@ const Patients = () => {
     const getCurrentPatient=(currentPatient:number) => {
         setCurrentPatient(currentPatient)
     }
-
+    useEffect(() => {
+        let eventSource = new EventSource("http://localhost:4000/" + 'streaming/event')
+        eventSource.onmessage = (ev) => {
+            let data_json = JSON.parse(ev.data)
+            console.log(ev.data)
+            // setStreamedData(data_json);
+            console.log(data_json)
+            console.log(JSON.parse(data_json[0].requestMetadata))
+        }
+    }, [])
     useEffect(() => {
         let userData = getLocalStorageDataByKey("userData");
         setUserLoginedData(userData);
