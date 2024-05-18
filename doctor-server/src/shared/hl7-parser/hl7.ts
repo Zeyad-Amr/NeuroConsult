@@ -33,7 +33,7 @@ export function parseHL7ToJSON(hl7Message: string): any {
     return json;
 }
 
-function convertJSONToHL7(json: any): string {
+export function convertJSONToHL7(json: any): string {
     let hl7Message = '';
 
     // Construct MSH segment
@@ -41,7 +41,9 @@ function convertJSONToHL7(json: any): string {
 
     // Construct PID segment
     const pidJson = json['PID'];
-    hl7Message += 'PID|1|' + (pidJson['id'] || '') + '|||' + (pidJson['name'] || '') + '||' + (pidJson['dateOfBirth'] || '') + '|' + (pidJson['gender'] || '') + '|||' + (pidJson['address'] || '') + '||' + (pidJson['phone'] || '') + '|' + (pidJson['bloodType'] || '') + '|\n';
+    if (pidJson) {
+        hl7Message += 'PID|1|' + (pidJson['id'] || '') + '|||' + (pidJson['name'] || '') + '||' + (pidJson['dateOfBirth'] || '') + '|' + (pidJson['gender'] || '') + '|||' + (pidJson['address'] || '') + '||' + (pidJson['phone'] || '') + '|' + (pidJson['bloodType'] || '') + '|\n';
+    }
 
     // Construct COM segment if comorbidities exist
     const comorbidities = json['comorbidities'];
