@@ -14,9 +14,12 @@ export interface CustomTextFieldProps {
   nonEditable?: boolean;
   isRequired?: boolean;
   width?: number | string;
+  multiline?: boolean;
+  noLable?: boolean;
   props?: TextFieldProps;
   sx?: {};
-  maxLength? : number
+  dark?: boolean | undefined;
+  maxLength?: number
 }
 
 const CustomTextField = ({
@@ -33,19 +36,23 @@ const CustomTextField = ({
   isRequired = false,
   props,
   sx,
+  dark,
   width,
+  multiline,
+  noLable,
   maxLength
 }: CustomTextFieldProps) => {
   return (
     <Box>
       <FormControl
         required={isRequired}
-        sx={{ width: { width }, maxWidth: "100%" }}
+        sx={{ width: { width }, maxWidth: "100%", color: !dark ? 'black' : 'white' }}
       >
-        {/* <Typography>
-          {label[0].toUpperCase() + label.slice(1)}
-        </Typography> */}
-
+        {!noLable ?
+          <Typography>
+            {label[0].toUpperCase() + label.slice(1)}
+          </Typography>
+          : null}
         <TextField
           type={props?.type ? props.type : "text"}
           onFocus={onFocus}
@@ -57,15 +64,19 @@ const CustomTextField = ({
           name={name}
           value={value}
           variant="outlined"
+          multiline={multiline} // Add the multiline prop
+          rows={5}
           sx={{
             boxShadow: "none",
-            backgroundColor: nonEditable || !enable ? "#ddd" : "#F4F4F4",
+            color: nonEditable || !enable ? "#fff" : "#fff",
             borderRadius: "5px",
+
             ".MuiOutlinedInput-notchedOutline": {
               border: !!(error && touched) ? "1px solid #FF5630" : 0,
             },
-            "& .MuiTextField-root": {
+            "& .MuiOutlinedInput-root": {
               maxWidth: "100%",
+              color: dark ? "#FFFFFF" : "#000",
             },
             margin: "0.3rem 0rem",
             maxWidth: "100%",

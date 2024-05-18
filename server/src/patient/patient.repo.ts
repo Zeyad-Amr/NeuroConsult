@@ -12,7 +12,6 @@ export class PatientRepo extends PrismaGenericRepo<Prisma.PatientCreateInput, Pa
             diagnosis: true,
             imaging: true,
             labs: true,
-            medications: true,
             vitals: true,
             user: true,
         })
@@ -23,6 +22,7 @@ export class PatientRepo extends PrismaGenericRepo<Prisma.PatientCreateInput, Pa
             const patient = await this.prismaService.patient.update({
                 where: { id },
                 data: {
+                    comorbidities: item.comorbidities ?? undefined,
                     allergies: item.allergies ? {
                         create: {
                             ...item.allergies,
@@ -33,11 +33,7 @@ export class PatientRepo extends PrismaGenericRepo<Prisma.PatientCreateInput, Pa
                             ...item.diagnosis
                         }
                     } : undefined,
-                    medications: item.medications ? {
-                        create: {
-                            ...item.medications
-                        }
-                    } : undefined,
+                    medications: item.medications ?? undefined,
                     vitals: item.vitals ? {
                         create: {
                             ...item.vitals

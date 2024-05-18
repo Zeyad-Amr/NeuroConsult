@@ -33,6 +33,7 @@ model Patient {
   phone         String   @unique
   address       String?
   comorbidities String[]
+  medications   String[]
   bloodType     String
 
   createdAt DateTime @default(now())
@@ -40,7 +41,6 @@ model Patient {
 
   user           User?
   vitals         Vitals[]
-  medications    Medication[]
   allergies      Allergy[]
   diagnosis      Diagnosis[]
   labs           Lab[]
@@ -50,23 +50,21 @@ model Patient {
 
 model Vitals {
   id          String   @id @default(cuid())
-  pulse       Int
-  bp          String
-  respiration Int
-  pso2        Int
+  pulse       Int?
+  bp          String?
+  respiration Int?
+  pso2        Int?
   patient     Patient? @relation(fields: [patientId], references: [id])
   patientId   String?
 }
 
 model Medication {
-  id         String   @id @default(cuid())
+  id         String  @id @default(cuid())
   medication String
   dose       String
   route      String
   time       String
   notes      String?
-  patient    Patient? @relation(fields: [patientId], references: [id])
-  patientId  String?
 }
 
 model Allergy {

@@ -14,9 +14,8 @@ datasource db {
 }
 
 model Response {
-  id              String   @id @default(cuid())
+  id              String   @id @default(uuid())
   requestMetadata Json
   DoctorResponse  String   @default("No response yet")
-  PID             String
   createdAt       DateTime @default(now())
 }

@@ -24,7 +24,7 @@ class RouterClass {
       element: <SIgnUp />,
     },
     {
-      path: AppRoutes.patients,
+      path: AppRoutes.doctor,
       element: <Patients />,
     },
     {
