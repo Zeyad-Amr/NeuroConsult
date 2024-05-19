@@ -584,6 +584,7 @@ const Patient = () => {
                     console.log(values);
                     handleConsultationRequestForm(values);
                     resetForm();
+                    setImgUrl("");
                   }}
                   enableReinitialize
                 >
