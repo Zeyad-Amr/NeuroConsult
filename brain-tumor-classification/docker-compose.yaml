@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  model:
+    image: model
+    container_name: model
+    build:
+      dockerfile: Dockerfile
+      context: .
+    ports:
+      - "5000:5000"

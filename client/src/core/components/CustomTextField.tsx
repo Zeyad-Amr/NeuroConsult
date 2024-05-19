@@ -62,7 +62,7 @@ const CustomTextField = ({
           value={value}
           variant="outlined"
           multiline={multiline} // Add the multiline prop
-          rows={5}
+          rows={4}
           sx={{
             boxShadow: "none",
             color: nonEditable || !enable ? "#fff" : "#fff",
