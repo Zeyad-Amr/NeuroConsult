@@ -6,6 +6,7 @@ import ErrorPage from "../components/error-404/ErrorPage";
 import LoginPage from "../../modules/login/pages/LoginPage";
 import SIgnUp from "../../modules/login/pages/SIgnUp";
 import Patients from "../../modules/patients/Patients";
+import DicomViewer from "../../modules/dicom-viewer/DicomViewer";
 
 
 
@@ -26,6 +27,10 @@ class RouterClass {
     {
       path: AppRoutes.doctor,
       element: <Patients />,
+    },
+    {
+      path: AppRoutes.dicom,
+      element: <DicomViewer />,
     },
     {
       path: AppRoutes.Error404,

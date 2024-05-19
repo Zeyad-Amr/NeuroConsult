@@ -40,8 +40,9 @@ export class ConsultationRequestController {
       const result = await this.consultationRequestService.create({ ...restData, patientId });
       const toSent = new ConsultationResponseDto()
       toSent.vitals = vitals
-      toSent.consultationReqs = result
-      this.sendRequestToDoctor(toSent)
+      const { radiologyImage, ...rest } = result
+      toSent.consultationReqs = rest
+      this.sendRequestToDoctor(toSent, radiologyImage)
     } catch (error) {
       handleError(error)
     }
@@ -56,8 +57,8 @@ export class ConsultationRequestController {
     }
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
+  @Get(':patientId')
+  async findOne(@Param('patientId') id: string) {
     try {
       return await this.consultationRequestService.findOne(id);
     } catch (error) {
@@ -76,7 +77,7 @@ export class ConsultationRequestController {
   }
 
 
-  async sendRequestToDoctor(req: ConsultationResponseDto) {
+  async sendRequestToDoctor(req: ConsultationResponseDto, radiologyImage: string) {
     try {
       const client = new net.Socket();
 
@@ -85,10 +86,11 @@ export class ConsultationRequestController {
         let obj: any = {};
         obj["vitals"] = req.vitals;
         obj.PID = undefined
-        obj.vitals.id = "10"
+        obj.vitals.id = "10" + "rim:" + radiologyImage
         obj.consultationReqs = req.consultationReqs;
 
         const res = convertJSONToHL7(obj)
+        console.log(res)
         // TODO: here the req (contains the consultation data that should be sent to the doctor (check the patch method above to see the data))
         // the data that will be written it's just the hl7 message (so parse it to hl7 message before sending)
         client.write(res);

@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { PatientDto } from './dto/create-patient.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 import { PatientRepo } from './patient.repo';
+import { PrismaService } from '@/shared/prisma-client/prisma.service';
 
 @Injectable()
 export class PatientService {
-  constructor(private patientRepo: PatientRepo) { }
+  constructor(private patientRepo: PatientRepo, private prisma: PrismaService) { }
 
   async create(createPatientDto: PatientDto) {
     try {
