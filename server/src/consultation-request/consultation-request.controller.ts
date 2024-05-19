@@ -35,6 +35,7 @@ export class ConsultationRequestController {
   async create(@Body() createConsultationRequestDto: CreateConsultationRequestDto) {
     try {
       const { vitals, patientId, ...restData } = createConsultationRequestDto
+      const patient = await this.patientService.findOne(patientId)
       const addVitals = await this.patientService.addMedicalData(patientId, { vitals })
 
       const result = await this.consultationRequestService.create({ ...restData, patientId });
@@ -42,7 +43,7 @@ export class ConsultationRequestController {
       toSent.vitals = vitals
       const { radiologyImage, ...rest } = result
       toSent.consultationReqs = rest
-      this.sendRequestToDoctor(toSent, radiologyImage)
+      this.sendRequestToDoctor(toSent, radiologyImage, patient)
     } catch (error) {
       handleError(error)
     }
@@ -77,7 +78,7 @@ export class ConsultationRequestController {
   }
 
 
-  async sendRequestToDoctor(req: ConsultationResponseDto, radiologyImage: string) {
+  async sendRequestToDoctor(req: ConsultationResponseDto, radiologyImage: string, patient: any) {
     try {
       const client = new net.Socket();
 
@@ -87,6 +88,8 @@ export class ConsultationRequestController {
         obj["vitals"] = req.vitals;
         obj.PID = undefined
         obj.vitals.id = "10" + "rim:" + radiologyImage
+        const p = JSON.stringify(patient)
+        req.consultationReqs.complaint = req.consultationReqs.complaint + " patientData " + p
         obj.consultationReqs = req.consultationReqs;
 
         const res = convertJSONToHL7(obj)
