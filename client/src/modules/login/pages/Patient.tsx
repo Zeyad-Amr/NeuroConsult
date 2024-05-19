@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Button, Grid, Typography } from "@mui/material";
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import CustomTextField from "../../../core/components/CustomTextField";
@@ -6,7 +5,6 @@ import { Formik } from "formik";
 import Header from "../../../core/components/Header";
 import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
 import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
-import { DoneRounded } from "@mui/icons-material";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import axios from "../../../core/api/api";
 import endPoints from "../../../core/api/endpoints";
@@ -19,8 +17,9 @@ import {
 const Patient = () => {
   const [completeData, setCompleteData] = useState<boolean>(false);
   const [userLoginedData, setUserLoginedData] = useState<any>();
+  const [patientData, setpatientData] = useState<any>();
   const [value, setValue] = useState<User>();
-
+  const [dataLoaded, setDataLoaded] = useState(false);
   const [patientDataInitialValues, setPatientDataInitialValues] =
     useState<User>({
       name: "",
@@ -60,24 +59,22 @@ const Patient = () => {
     consultationRequest: "",
   };
 
+  const [requests, setRequests] = useState([]);
+  const [imgUrl, setImgUrl] = useState("");
 
-    const [requests, setRequests] = useState([])
-    const [imgUrl, setImgUrl] = useState('')
-    const handleFileInputChange = async (event: ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            // Send file to the backend
-            const formData = new FormData();
-            formData.append('file', file);
+  const handleFileInputChange = async (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // Send file to the backend
+      const formData = new FormData();
+      formData.append("file", file);
 
       try {
-        const response = await axios.post(
-          "http://localhost:5000/files/store",
-          formData
-        );
-        console.log(response.data["url"]);
-        setImgUrl(response.data["url"]);
-        return response.data["url"];
+        const response = await axios.post("files/store", formData);
+        console.log(response.data);
+        setImgUrl(response.data);
       } catch (error) {
         console.error("Error fetching consultation requests", error);
         throw error;
@@ -85,21 +82,21 @@ const Patient = () => {
     }
   };
 
-    const patientOmElData: any = useRef();
-    const [active, setActive] = useState<string>('New Request')
-    let userData = getLocalStorageDataByKey("userData");
+  const patientOmElData: any = useRef();
+  const [active, setActive] = useState<string>("New Request");
+  let userData = getLocalStorageDataByKey("userData");
 
-    useEffect(() => {
-        setUserLoginedData(userData);
-        setpatientData(userData?.user.patient);
-        console.log(userData?.user.patientId, "userData.patientId");
-        console.log(userData?.user.patient, "userData.patientId");
-        patientOmElData.current = userData?.user.patient
-        let value = patientOmElData.current
-        console.log(value, "value");
-        setValue(value)
-        fetchConsultationRequests()
-        // getAllPatientsData();
+  useEffect(() => {
+    setUserLoginedData(userData);
+    setpatientData(userData?.user.patient);
+    console.log(userData?.user.patientId, "userData.patientId");
+    console.log(userData?.user.patient, "userData.patientId");
+    patientOmElData.current = userData?.user.patient;
+    let value = patientOmElData.current;
+    console.log(value, "value");
+    setValue(value);
+    fetchConsultationRequests();
+    // getAllPatientsData();
 
     setPatientDataInitialValues({
       birthDate: value?.birthDate,
@@ -111,56 +108,94 @@ const Patient = () => {
       phone: value?.phone,
       address: value?.address,
     });
+    //   setPatientDataInitialValues(userData?.user.patient)
   }, []);
 
-    
-    const fetchConsultationRequests = async () => {
-        const API_URL = `consultation-request/${userData?.user?.patientId}`;
-        try {
-            const response = await axios.get(API_URL);
-            console.log('response', response);
-            setRequests(response.data)
-            return response.data;
-        } catch (error) {
-            console.error('Error fetching consultation requests', error);
-            throw error;
-        }
-    };
+  // const getAllPatientsData = () => {
+  //     axios
+  //         .get(`${endPoints.getAllPatientsData + '/' + userLoginedData?.user?.patientId}`)
+  //         .then((res: any) => {
+  //             if (res?.data) {
+  //                 console.log(res?.data, "single Patiane");
+  //                 if (userLoginedData?.user?.patientId) {
+  //                     let targetPatientData = res?.data?.find(
+  //                         (patientData: any) =>
+  //                             patientData.id === userLoginedData?.user?.patientId
+  //                     );
+  //                     setpatientData(targetPatientData);
+  //                 }
+  //                 if (patientData) {
+  //                     console.log(patientData, "patientData");
+  //                     setPatientDataInitialValues({
+  //                         birthDate: patientData?.birthDate,
+  //                         bloodType: patientData?.bloodType,
+  //                         comorbidities: patientData?.comorbidities?.join(",  "),
+  //                         gender: patientData?.gender,
+  //                         Medication: patientData?.Medication?.join(",  "),
+  //                         name: patientData?.name,
+  //                         phone: patientData?.phone,
+  //                         address: patientData?.address,
+  //                     });
+  //                 }
+  //                 console.log(patientDataInitialValues, "patientDataInitialValues");
+  //                 setDataLoaded(true);
+  //             } else {
+  //                 AlertService.showAlert(`${res?.message}`, "error");
+  //             }
+  //         })
+  //         .catch((err: any) => {
+  //             AlertService.showAlert(`${err?.message}`, "error");
+  //             console.log(err);
+  //         });
+  // };
+
+  const fetchConsultationRequests = async () => {
+    const API_URL = `consultation-request/${userData?.user?.patientId}`;
+    try {
+      const response = await axios.get(API_URL);
+      console.log("response", response);
+      setRequests(response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching consultation requests", error);
+      throw error;
+    }
+  };
 
   const inputFile: any = useRef();
 
-    const handleConsultationRequestForm = async (values: VitalSigns) => {
-        const submitObject = {
-            patientId: userData?.user?.patientId,
-            complaint: values.consultationRequest,
-            vitals: {
-                pulse: parseInt(values.pulse),
-                bp: values.bp,
-                respiration: parseInt(values.respiration),
-                pso2: parseInt(values.pso2),
-            },
-            radiologyImage: imgUrl
-        };
-        console.log(submitObject, "submitObject");
-
-        axios
-            .post(endPoints.consultationReq, submitObject)
-            .then((res: any) => {
-                console.log(res);
-                console.log(res?.data);
-                if (res?.status === 201) {
-                    AlertService.showAlert(
-                        "Consultation request is added successfully",
-                        "success"
-                    );
-                    fetchConsultationRequests()
-                }
-            })
-            .catch((err: any) => {
-                AlertService.showAlert(`${err?.message}`, "error");
-                console.log(err);
-            });
+  const handleConsultationRequestForm = async (values: VitalSigns) => {
+    const submitObject = {
+      patientId: userData?.user?.patientId,
+      complaint: values.consultationRequest,
+      vitals: {
+        pulse: parseInt(values.pulse),
+        bp: values.bp,
+        respiration: parseInt(values.respiration),
+        pso2: parseInt(values.pso2),
+      },
+      radiologyImage: imgUrl,
     };
+    console.log(submitObject, "submitObject");
+
+    axios
+      .post(endPoints.consultationReq, submitObject)
+      .then((res: any) => {
+        console.log(res);
+        console.log(res?.data);
+        if (res?.status === 201) {
+          AlertService.showAlert(
+            "Consultation request is added successfully",
+            "success"
+          );
+          fetchConsultationRequests();
+        }
+      })
+      .catch((err: any) => {
+        AlertService.showAlert(`${err?.message}`, "error");
+        console.log(err);
+      });
+  };
 
   return (
     <Box
@@ -524,85 +559,103 @@ const Patient = () => {
                                     >
                                         <RadarRoundedIcon sx={{ color: "white" }} />
                                     </Box> */}
-                                </Box>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    <Grid item lg={4} md={4} sm={4} xs={12}>
-
-                        <Box
-                            sx={{
-                                width: "100%",
-                                maxHeight: "96vh",
-                                minHeight: "96vh",
-                                backgroundColor: "rgb(24, 29, 37)",
-                                borderTopRightRadius: "10px",
-                                borderBottomRightRadius: "10px",
-                                padding: "2rem",
-                                boxSizing: "border-box",
-                                overflowY: "auto",
-                            }}
-                        >
-                            <Box sx={{ width: '100%', height: '3.5rem', display: 'flex', mb: 5 }}>
-                                <Box sx={{
-                                    width: '100%', height: '100%', backgroundColor: "rgb(32, 37, 45)",
-                                    color: 'white',
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    cursor: 'pointer',
-                                    transition: '0.3s ease-in-out',
-                                    borderBottom: active === 'New Request' ? '1px solid #29f19c' : 'none'
-                                }}
-                                    onClick={() => setActive('New Request')}
-                                >
-                                    <Typography sx={{
-                                        transition: '0.3s ease-in-out',
-                                        opacity: active === 'New Request' ? '1' : '0.5'
-                                    }}> New Request </Typography>
-                                </Box>
-                                <Box sx={{
-                                    width: '100%', height: '100%', backgroundColor: "rgb(32, 37, 45)",
-                                    color: 'white',
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    cursor: 'pointer',
-                                    transition: '0.3s ease-in-out',
-                                    borderBottom: active === 'Old Requests' ? '1px solid #29f19c' : 'none'
-
-                                }}
-                                    onClick={() => setActive('Old Requests')}
-
-                                >
-                                    <Typography sx={{
-                                        transition: '0.3s ease-in-out',
-                                        opacity: active === 'Old Requests' ? '1' : '0.5'
-                                    }}> Old Requests </Typography>
-                                </Box>
-                            </Box>
-                            {active === 'New Request' ? <Formik
-                                initialValues={vitalsInitialValues}
-                                onSubmit={(values , { resetForm }) => {
-                                    console.log(values);
-                                    handleConsultationRequestForm(values)
-                                    resetForm();
-                                }}
-                                enableReinitialize
-                            >
-                                {({
-                                    values,
-                                    touched,
-                                    errors,
-                                    handleChange,
-                                    handleBlur,
-                                    handleSubmit,
-                                }) => (
-                                    <Box component="form" onSubmit={handleSubmit} noValidate>
-                                        <Grid container spacing={2}>
-                                            <Grid item lg={12} md={12} sm={12} xs={12}>
-                                                <Header title="Consultation Request" dark />
-                                            </Grid>
+                </Box>
+              </Box>
+            </Box>
+          </Grid>
+          <Grid item lg={4} md={4} sm={4} xs={12}>
+            <Box
+              sx={{
+                width: "100%",
+                maxHeight: "96vh",
+                minHeight: "96vh",
+                backgroundColor: "rgb(24, 29, 37)",
+                borderTopRightRadius: "10px",
+                borderBottomRightRadius: "10px",
+                padding: "2rem",
+                boxSizing: "border-box",
+                overflowY: "auto",
+              }}
+            >
+              <Box
+                sx={{ width: "100%", height: "3.5rem", display: "flex", mb: 5 }}
+              >
+                <Box
+                  sx={{
+                    width: "100%",
+                    height: "100%",
+                    backgroundColor: "rgb(32, 37, 45)",
+                    color: "white",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    transition: "0.3s ease-in-out",
+                    borderBottom:
+                      active === "New Request" ? "1px solid #29f19c" : "none",
+                  }}
+                  onClick={() => setActive("New Request")}
+                >
+                  <Typography
+                    sx={{
+                      transition: "0.3s ease-in-out",
+                      opacity: active === "New Request" ? "1" : "0.5",
+                    }}
+                  >
+                    {" "}
+                    New Request{" "}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    width: "100%",
+                    height: "100%",
+                    backgroundColor: "rgb(32, 37, 45)",
+                    color: "white",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    transition: "0.3s ease-in-out",
+                    borderBottom:
+                      active === "Old Requests" ? "1px solid #29f19c" : "none",
+                  }}
+                  onClick={() => setActive("Old Requests")}
+                >
+                  <Typography
+                    sx={{
+                      transition: "0.3s ease-in-out",
+                      opacity: active === "Old Requests" ? "1" : "0.5",
+                    }}
+                  >
+                    {" "}
+                    Old Requests{" "}
+                  </Typography>
+                </Box>
+              </Box>
+              {active === "New Request" ? (
+                <Formik
+                  initialValues={vitalsInitialValues}
+                  onSubmit={(values, { resetForm }) => {
+                    console.log(values);
+                    handleConsultationRequestForm(values);
+                    resetForm();
+                  }}
+                  enableReinitialize
+                >
+                  {({
+                    values,
+                    touched,
+                    errors,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                  }) => (
+                    <Box component="form" onSubmit={handleSubmit} noValidate>
+                      <Grid container spacing={2}>
+                        <Grid item lg={12} md={12} sm={12} xs={12}>
+                          <Header title="Consultation Request" dark />
+                        </Grid>
 
                         <Grid item lg={6} md={6} sm={6} xs={12}>
                           <CustomTextField
@@ -728,16 +781,9 @@ const Patient = () => {
                             onClick={() => inputFile.current.click()}
                           >
                             <Typography sx={{ color: "white" }}>
-                              {imgUrl.length > 0
-                                ? "Radiology Scan Uploaded"
-                                : "Upload Your Radiology Scan"}
+                              Upload Your Radiology Scan
                             </Typography>
-
-                            {imgUrl.length > 0 ? (
-                              <DoneRounded sx={{ color: "#29f19c" }} />
-                            ) : (
-                              <FileUploadRoundedIcon sx={{ color: "white" }} />
-                            )}
+                            <FileUploadRoundedIcon sx={{ color: "white" }} />
                           </Box>
                           <input
                             type="file"
