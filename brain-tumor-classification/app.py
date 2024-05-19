@@ -1,5 +1,6 @@
 from convert import dicom_to_jpeg
 from flask import Flask, request, jsonify, send_from_directory  # type: ignore
+import requests  # type: ignore
 from tensorflow.keras.models import load_model  # type: ignore
 import numpy as np
 import cv2
@@ -61,6 +62,19 @@ def predict_tumor(image_path):
     result = 'Yes' if prediction[0][0] > 0.5 else 'No'
     return result
 
+
+def download_file(url, dest_folder):
+    if not os.path.exists(dest_folder):
+        os.makedirs(dest_folder)
+    local_filename = os.path.join(
+        dest_folder, secure_filename(url.split('/')[-1]))
+    with requests.get(url, stream=True) as r:
+        r.raise_for_status()
+        with open(local_filename, 'wb') as f:
+            for chunk in r.iter_content(chunk_size=8192):
+                f.write(chunk)
+    return local_filename
+
 ############################# Endpoints #############################
 
 # ********************************************* HEALTH CHECK ENDPOINTS ***********************************************
@@ -75,36 +89,36 @@ def ping():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    if 'file' not in request.files:
-        return jsonify({'error': 'No file part in the request'}), 400
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({'error': 'No file selected for uploading'}), 400
-    if file:
-        filename = secure_filename(file.filename)
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(filepath)
+    data = request.get_json()
+    if not data or 'url' not in data:
+        return jsonify({'error': 'No file URL part in the request'}), 400
 
-        if file.filename.endswith('.dcm'):  # Convert DICOM to JPEG
+    file_url = data['url']
+    try:
+        filepath = download_file(file_url, app.config['STORAGE_FOLDER'])
+
+        if filepath.endswith('.dcm'):  # Convert DICOM to JPEG
             jpeg_path = os.path.splitext(filepath)[0] + '.jpg'
             dicom_to_jpeg(filepath, jpeg_path)
             os.remove(filepath)
             filepath = jpeg_path
-
-        elif not file.filename.endswith(('.jpg', '.jpeg')):
+        elif not filepath.endswith(('.jpg', '.jpeg')):
+            os.remove(filepath)
             return jsonify({'error': 'Invalid file format. Please upload a JPEG image or DICOM file'}), 400
 
         # Preprocess the image and make prediction
         result = predict_tumor(filepath)
 
-        # Remove the uploaded image
+        # Remove the downloaded image
         os.remove(filepath)
 
         return jsonify({'prediction': result})
-    return jsonify({'error': 'Failed to process the request'}), 500
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
 # ********************************************* FILES ENDPOINTS ***********************************************
+
 
 @app.route('/files/store', methods=['POST'])
 def upload_file():
