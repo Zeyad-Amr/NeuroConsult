@@ -47,23 +47,7 @@ const initialConfig: Config = {
   frameRate: 1,
 };
 
-const createImageIDs = (): string[] => {
-  const MyImageIds: string[] = [];
-
-  for (let i = 0; i < 5; i++) {
-    MyImageIds.push(
-      `wadouri:https://static.lunit.io/fixtures/dcm-files/series/CT00000${i}.dcm`
-    );
-  }
-
-  return MyImageIds;
-};
-
 const DicomViewer: React.FC = () => {
-  const myIDs = createImageIDs();
-
-  initialConfig.imageIds = myIDs;
-
   const [config, setConfig] = useState<Config>(initialConfig);
   const [isImageIDs, setIsImageIDs] = useState<boolean>(false);
 
@@ -87,15 +71,7 @@ const DicomViewer: React.FC = () => {
   }, [config.imageIds]);
 
   return (
-    // <div style={{ backgroundColor: "black", height: "100vh", width: "100%" }}>
-    <div
-      style={{
-        display: "flex",
-        flexWrap: "wrap",
-        width: "100%",
-        height: "512px",
-      }}
-    >
+    <>
       <input type="file" accept=".dcm" onChange={handleFileInputChange} />
 
       {isImageIDs &&
@@ -106,7 +82,7 @@ const DicomViewer: React.FC = () => {
             style={{ flex: "1", display: "flex", flexDirection: "row" }}
           >
             <CornerstoneViewport
-              style={{ flex: "1", minWidth: "720px", height: "470px" }}
+              style={{ flex: "1", maxWidth: "720px", height: "470px" }}
               tools={config.tools}
               imageIds={config.imageIds}
               imageIdIndex={config.imageIdIndex}
@@ -125,8 +101,7 @@ const DicomViewer: React.FC = () => {
             />
           </div>
         ))}
-    </div>
-    // </div>
+    </>
   );
 };
 
