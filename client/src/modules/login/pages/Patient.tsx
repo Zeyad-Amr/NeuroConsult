@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Button, Grid, Typography } from "@mui/material";
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import CustomTextField from "../../../core/components/CustomTextField";
@@ -13,13 +14,12 @@ import {
   getLocalStorageDataByKey,
   logOut,
 } from "../../../core/services/shared-service";
+import { DoneRounded } from "@mui/icons-material";
 
 const Patient = () => {
   const [completeData, setCompleteData] = useState<boolean>(false);
   const [userLoginedData, setUserLoginedData] = useState<any>();
-  const [patientData, setpatientData] = useState<any>();
   const [value, setValue] = useState<User>();
-  const [dataLoaded, setDataLoaded] = useState(false);
   const [patientDataInitialValues, setPatientDataInitialValues] =
     useState<User>({
       name: "",
@@ -72,9 +72,13 @@ const Patient = () => {
       formData.append("file", file);
 
       try {
-        const response = await axios.post("files/store", formData);
-        console.log(response.data);
-        setImgUrl(response.data);
+        const response = await axios.post(
+          "http://localhost:5000/files/store",
+          formData
+        );
+        console.log(response.data["url"]);
+        setImgUrl(response.data["url"]);
+        return response.data["url"];
       } catch (error) {
         console.error("Error fetching consultation requests", error);
         throw error;
@@ -108,46 +112,7 @@ const Patient = () => {
       phone: value?.phone,
       address: value?.address,
     });
-    //   setPatientDataInitialValues(userData?.user.patient)
   }, []);
-
-  // const getAllPatientsData = () => {
-  //     axios
-  //         .get(`${endPoints.getAllPatientsData + '/' + userLoginedData?.user?.patientId}`)
-  //         .then((res: any) => {
-  //             if (res?.data) {
-  //                 console.log(res?.data, "single Patiane");
-  //                 if (userLoginedData?.user?.patientId) {
-  //                     let targetPatientData = res?.data?.find(
-  //                         (patientData: any) =>
-  //                             patientData.id === userLoginedData?.user?.patientId
-  //                     );
-  //                     setpatientData(targetPatientData);
-  //                 }
-  //                 if (patientData) {
-  //                     console.log(patientData, "patientData");
-  //                     setPatientDataInitialValues({
-  //                         birthDate: patientData?.birthDate,
-  //                         bloodType: patientData?.bloodType,
-  //                         comorbidities: patientData?.comorbidities?.join(",  "),
-  //                         gender: patientData?.gender,
-  //                         Medication: patientData?.Medication?.join(",  "),
-  //                         name: patientData?.name,
-  //                         phone: patientData?.phone,
-  //                         address: patientData?.address,
-  //                     });
-  //                 }
-  //                 console.log(patientDataInitialValues, "patientDataInitialValues");
-  //                 setDataLoaded(true);
-  //             } else {
-  //                 AlertService.showAlert(`${res?.message}`, "error");
-  //             }
-  //         })
-  //         .catch((err: any) => {
-  //             AlertService.showAlert(`${err?.message}`, "error");
-  //             console.log(err);
-  //         });
-  // };
 
   const fetchConsultationRequests = async () => {
     const API_URL = `consultation-request/${userData?.user?.patientId}`;
@@ -781,9 +746,16 @@ const Patient = () => {
                             onClick={() => inputFile.current.click()}
                           >
                             <Typography sx={{ color: "white" }}>
-                              Upload Your Radiology Scan
+                              {imgUrl.length > 0
+                                ? "Radiology Scan Uploaded"
+                                : "Upload Your Radiology Scan"}
                             </Typography>
-                            <FileUploadRoundedIcon sx={{ color: "white" }} />
+
+                            {imgUrl.length > 0 ? (
+                              <DoneRounded sx={{ color: "#29f19c" }} />
+                            ) : (
+                              <FileUploadRoundedIcon sx={{ color: "white" }} />
+                            )}
                           </Box>
                           <input
                             type="file"
