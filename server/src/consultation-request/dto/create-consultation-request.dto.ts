@@ -12,6 +12,8 @@ export class CreateConsultationRequestDto {
     vitals?
 
 
+    @IsOptional()
+    @IsString()
     radiologyImage: string;
 }
 
