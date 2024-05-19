@@ -95,17 +95,16 @@ def predict():
 
     file_url = data['url']
     try:
-        filepath = download_file(file_url, app.config['STORAGE_FOLDER'])
-
+        filepath = download_file(file_url, app.config['UPLOAD_FOLDER'])
+        print(filepath)
         if filepath.endswith('.dcm'):  # Convert DICOM to JPEG
             jpeg_path = os.path.splitext(filepath)[0] + '.jpg'
             dicom_to_jpeg(filepath, jpeg_path)
-            os.remove(filepath)
             filepath = jpeg_path
         elif not filepath.endswith(('.jpg', '.jpeg')):
-            os.remove(filepath)
             return jsonify({'error': 'Invalid file format. Please upload a JPEG image or DICOM file'}), 400
 
+        print(filepath)
         # Preprocess the image and make prediction
         result = predict_tumor(filepath)
 
@@ -115,6 +114,37 @@ def predict():
         return jsonify({'prediction': result})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
+# @app.route('/predict', methods=['POST'])
+# def predict():
+#     if 'file' not in request.files:
+#         return jsonify({'error': 'No file part in the request'}), 400
+#     file = request.files['file']
+#     if file.filename == '':
+#         return jsonify({'error': 'No file selected for uploading'}), 400
+#     if file:
+#         filename = secure_filename(file.filename)
+#         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+#         file.save(filepath)
+
+#         if file.filename.endswith('.dcm'):  # Convert DICOM to JPEG
+#             jpeg_path = os.path.splitext(filepath)[0] + '.jpg'
+#             dicom_to_jpeg(filepath, jpeg_path)
+#             os.remove(filepath)
+#             filepath = jpeg_path
+
+#         elif not file.filename.endswith(('.jpg', '.jpeg')):
+#             return jsonify({'error': 'Invalid file format. Please upload a JPEG image or DICOM file'}), 400
+
+#         # Preprocess the image and make prediction
+#         result = predict_tumor(filepath)
+
+#         # Remove the uploaded image
+#         os.remove(filepath)
+
+#         return jsonify({'prediction': result})
+#     return jsonify({'error': 'Failed to process the request'}), 500
 
 
 # ********************************************* FILES ENDPOINTS ***********************************************
