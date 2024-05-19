@@ -16,8 +16,23 @@ export class PatientController {
 
         let jsonReq = parseHL7ToJSON(data.toString());
         const d = new Consultation();
+
         d.consultationReqs = jsonReq.consultationReqs;
+        const complaintString = d.consultationReqs.complaint;
+        const delimiter = " patientData ";
+        const [originalComplaint, p] = complaintString.split(delimiter);
+        d.consultationReqs.complaint = originalComplaint;
+
+        const patient = JSON.parse(p)
+        console.log(patient)
+
+
+
+
         d.vitals = jsonReq.vitals;
+        d.consultationReqs.patientName = patient.name;
+        d.consultationReqs.patientGender = patient.gender;
+        d.consultationReqs.patientBirthDate = patient.birthDate;
         d.consultationReqs.radiologyImage = d.vitals.id.substring(6);
         d.vitals.id = "10"
 

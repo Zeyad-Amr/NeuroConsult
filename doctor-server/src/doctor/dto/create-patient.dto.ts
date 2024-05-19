@@ -33,6 +33,9 @@ interface ConsultationReqs {
     id: string;
     complaint: string;
     radiologyImage: string;
+    patientName: string;
+    patientGender: string;
+    patientBirthDate: string;
 }
 
 
