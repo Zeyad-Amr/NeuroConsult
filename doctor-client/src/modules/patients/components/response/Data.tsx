@@ -86,7 +86,7 @@ const Data = ({ data }: { data: any }) => {
                 </DataCard>
             </Grid>
             <Grid item lg={12} md={12} sm={12} xs={12} sx={{ mt: 4 }}>
-            { data.consultationReqs.id &&  <DoctorResponce patientId={data.consultationReqs.id} />}
+            { data.consultationReqs &&  <DoctorResponce consultationReqsData={data?.consultationReqs} patientId={data.consultationReqs.id} />}
             </Grid>
         </Grid>
     )

@@ -23,8 +23,8 @@ const Patients = () => {
         let eventSource = new EventSource( baseUrl + 'streaming/event')
         eventSource.onmessage = (ev) => {
             let data_json = JSON.parse(ev.data)
-            console.log(ev.data)
-            // console.log(data_json)
+            // console.log(ev.data)
+            console.log(data_json)
             setConsultationReqData(data_json)
             // setStreamedData(data_json);
             // console.log(JSON.parse(data_json[0].requestMetadata))
