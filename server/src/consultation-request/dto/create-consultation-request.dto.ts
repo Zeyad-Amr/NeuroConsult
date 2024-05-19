@@ -10,6 +10,9 @@ export class CreateConsultationRequestDto {
 
     @IsOptional()
     vitals?
+
+
+    radiologyImage: string;
 }
 
 export class ConsultationResponseDto {

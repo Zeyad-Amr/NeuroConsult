@@ -32,4 +32,13 @@ interface Vitals {
 interface ConsultationReqs {
     id: string;
     complaint: string;
+    radiologyImage: string;
+}
+
+
+export class DoctorResp {
+    id: string;
+    requestMetadata: ConsultationReqs;
+    DoctorResponse: string;
+    createdAt: string;
 }

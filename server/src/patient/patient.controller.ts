@@ -34,9 +34,9 @@ export class PatientController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') patientId: string) {
     try {
-      return await this.patientService.findOne(id);
+      return await this.patientService.findOne(patientId);
     } catch (error) {
       throw error
     }

@@ -16,4 +16,16 @@ export class ConsultatinReqRepo extends PrismaGenericRepo<Prisma.ConsultatinReqC
         })
     }
 
+    async getByPatientId(id: string) {
+        try {
+            return await this.prismaService.consultatinReq.findMany({
+                where: { patientId: id }, include: {
+                    patient: true
+                }
+            })
+        } catch (error) {
+            throw error
+        }
+    }
+
 }

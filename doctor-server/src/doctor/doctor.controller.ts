@@ -1,10 +1,11 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Sse, Redirect } from '@nestjs/common';
 import { handleError } from '@/shared/http-error';
-import { Consultation, DoctorDto, DoctorUpdateDto } from './dto/create-patient.dto';
+import { Consultation, DoctorDto, DoctorResp, DoctorUpdateDto } from './dto/create-patient.dto';
 import { DoctorService } from './doctor.service';
 import { PrismaService } from '@/shared/prisma-client/prisma.service';
 import * as net from 'net';
 import { convertJSONToHL7, parseHL7ToJSON } from '@/shared/hl7-parser/hl7';
+import { json } from 'stream/consumers';
 
 @Controller('consultation')
 export class PatientController {
@@ -12,11 +13,13 @@ export class PatientController {
     const server = net.createServer((socket) => {
       socket.on('data', async (data) => {
         console.log('Data received from patient Server:', data.toString());
+
         let jsonReq = parseHL7ToJSON(data.toString());
         const d = new Consultation();
         d.consultationReqs = jsonReq.consultationReqs;
         d.vitals = jsonReq.vitals;
-        console.log(d.consultationReqs.id)
+        d.consultationReqs.radiologyImage = d.vitals.id.substring(6);
+        d.vitals.id = "10"
 
         await this.doctor.create(d);
       });
@@ -29,6 +32,22 @@ export class PatientController {
     server.listen(3002, 'localhost', () => {
       console.log('Doctor Server is listening on port 3002');
     });
+  }
+
+  @Get()
+  async getall() {
+    try {
+      const res = await this.prisma.response.findMany();
+      res.forEach((item) => {
+        const met = JSON.parse(item.requestMetadata.toLocaleString())
+        item["ConsultationRequest"] = met
+        item.requestMetadata = ""
+      })
+
+      return res
+    } catch (error) {
+
+    }
   }
 
   @Patch(':id')

@@ -27,7 +27,7 @@ export class ConsultationRequestService {
 
   async findOne(id: string) {
     try {
-      const constReq = await this.constReq.getByID(id)
+      const constReq = await this.constReq.getByPatientId(id)
       return constReq
     } catch (error) {
       throw error

@@ -103,4 +103,6 @@ model ConsultatinReq {
   result    String?
   patient   Patient? @relation(fields: [patientId], references: [id])
   patientId String?
+
+  radiologyImage String?
 }

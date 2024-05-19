@@ -6,8 +6,15 @@ export class StreamingService {
   constructor(private readonly prisma: PrismaService) { }
 
   async getPatientsRequests() {
-    return await this.prisma.response.findMany({ orderBy: { createdAt: 'desc' } });
+    const res = await this.prisma.response.findMany({ orderBy: { createdAt: 'desc' } });
     ;
+    res.forEach((item) => {
+      const met = JSON.parse(item.requestMetadata.toLocaleString())
+      item["ConsultationRequest"] = met
+      item.requestMetadata = ""
+    })
+
+    return res
   }
 
   findOne(id: number) {
