@@ -92,7 +92,6 @@ const Patient = () => {
 
   useEffect(() => {
     setUserLoginedData(userData);
-    setpatientData(userData?.user.patient);
     console.log(userData?.user.patientId, "userData.patientId");
     console.log(userData?.user.patient, "userData.patientId");
     patientOmElData.current = userData?.user.patient;
@@ -504,26 +503,6 @@ const Patient = () => {
                   >
                     <DescriptionRoundedIcon sx={{ color: "white" }} />
                   </Box>
-                  {/* <Box
-                                        sx={{
-                                            padding: "0.5rem",
-                                            borderRadius: "4px",
-                                            backgroundColor: "rgb(32, 37, 45)",
-                                            cursor: "pointer",
-                                        }}
-                                    >
-                                        <BiotechRoundedIcon sx={{ color: "white" }} />
-                                    </Box>
-                                    <Box
-                                        sx={{
-                                            padding: "0.5rem",
-                                            borderRadius: "4px",
-                                            backgroundColor: "rgb(32, 37, 45)",
-                                            cursor: "pointer",
-                                        }}
-                                    >
-                                        <RadarRoundedIcon sx={{ color: "white" }} />
-                                    </Box> */}
                 </Box>
               </Box>
             </Box>
