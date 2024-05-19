@@ -12,7 +12,7 @@ export class ConsultatinReqRepo extends PrismaGenericRepo<Prisma.ConsultatinReqC
     async addDoctorResult(id: string, result: string) {
         return await this.prismaService.consultatinReq.update({
             where: { id },
-            data: { result: result }
+            data: { result: result, updatedAt: new Date() }
         })
     }
 
