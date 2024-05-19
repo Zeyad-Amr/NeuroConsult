@@ -5,7 +5,7 @@ const Header = ({ title, dark }: { title: string, dark?: boolean }) => {
     return (
         <Box>
             <Typography sx={{ color: !dark ? 'black' : 'white' }}>
-                {title}
+                {title[0].toUpperCase() + title.slice(1)}
             </Typography>
             <Box sx={{ width: '100%', height: '2px', background: 'linear-gradient(45deg, #29f19c, #02a1f9)' }} />
         </Box>

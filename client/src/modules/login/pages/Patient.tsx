@@ -1,11 +1,10 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import CustomTextField from "../../../core/components/CustomTextField";
 import { Formik } from "formik";
 import Header from "../../../core/components/Header";
 import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
-import BiotechRoundedIcon from "@mui/icons-material/BiotechRounded";
-import RadarRoundedIcon from "@mui/icons-material/RadarRounded";
+import FileUploadRoundedIcon from '@mui/icons-material/FileUploadRounded';
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import axios from "../../../core/api/api";
 import endPoints from "../../../core/api/endpoints";
@@ -16,6 +15,8 @@ import {
 } from "../../../core/services/shared-service";
 
 const Patient = () => {
+
+
     const [completeData, setCompleteData] = useState<boolean>(false);
     const [userLoginedData, setUserLoginedData] = useState<any>();
     const [patientData, setpatientData] = useState<any>();
@@ -59,8 +60,31 @@ const Patient = () => {
         pso2: '',
         consultationRequest: "",
     };
-    const patientOmElData: any = useRef();
 
+
+    const [requests, setRequests] = useState([])
+    const [imgUrl, setImgUrl] = useState('')
+    const handleFileInputChange = async (event: ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            // Send file to the backend
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await axios.post('http://localhost:5000/files/store', formData);
+                console.log(response.data)
+                setImgUrl(response.data)
+                return response.data;
+            } catch (error) {
+                console.error('Error fetching consultation requests', error);
+                throw error;
+            }
+        }
+    };
+
+    const patientOmElData: any = useRef();
+    const [active, setActive] = useState<string>('New Request')
     useEffect(() => {
         let userData = getLocalStorageDataByKey("userData");
         setUserLoginedData(userData);
@@ -86,43 +110,64 @@ const Patient = () => {
         //   setPatientDataInitialValues(userData?.user.patient)
     }, []);
 
-    const getAllPatientsData = () => {
-        axios
-            .get(`${endPoints.getAllPatientsData + '/' + userLoginedData?.user?.patientId}`)
-            .then((res: any) => {
-                if (res?.data) {
-                    console.log(res?.data, "single Patiane");
-                    if (userLoginedData?.user?.patientId) {
-                        let targetPatientData = res?.data?.find(
-                            (patientData: any) =>
-                                patientData.id === userLoginedData?.user?.patientId
-                        );
-                        setpatientData(targetPatientData);
-                    }
-                    if (patientData) {
-                        console.log(patientData, "patientData");
-                        setPatientDataInitialValues({
-                            birthDate: patientData?.birthDate,
-                            bloodType: patientData?.bloodType,
-                            comorbidities: patientData?.comorbidities?.join(",  "),
-                            gender: patientData?.gender,
-                            Medication: patientData?.Medication?.join(",  "),
-                            name: patientData?.name,
-                            phone: patientData?.phone,
-                            address: patientData?.address,
-                        });
-                    }
-                    console.log(patientDataInitialValues, "patientDataInitialValues");
-                    setDataLoaded(true);
-                } else {
-                    AlertService.showAlert(`${res?.message}`, "error");
-                }
-            })
-            .catch((err: any) => {
-                AlertService.showAlert(`${err?.message}`, "error");
-                console.log(err);
-            });
+    // const getAllPatientsData = () => {
+    //     axios
+    //         .get(`${endPoints.getAllPatientsData + '/' + userLoginedData?.user?.patientId}`)
+    //         .then((res: any) => {
+    //             if (res?.data) {
+    //                 console.log(res?.data, "single Patiane");
+    //                 if (userLoginedData?.user?.patientId) {
+    //                     let targetPatientData = res?.data?.find(
+    //                         (patientData: any) =>
+    //                             patientData.id === userLoginedData?.user?.patientId
+    //                     );
+    //                     setpatientData(targetPatientData);
+    //                 }
+    //                 if (patientData) {
+    //                     console.log(patientData, "patientData");
+    //                     setPatientDataInitialValues({
+    //                         birthDate: patientData?.birthDate,
+    //                         bloodType: patientData?.bloodType,
+    //                         comorbidities: patientData?.comorbidities?.join(",  "),
+    //                         gender: patientData?.gender,
+    //                         Medication: patientData?.Medication?.join(",  "),
+    //                         name: patientData?.name,
+    //                         phone: patientData?.phone,
+    //                         address: patientData?.address,
+    //                     });
+    //                 }
+    //                 console.log(patientDataInitialValues, "patientDataInitialValues");
+    //                 setDataLoaded(true);
+    //             } else {
+    //                 AlertService.showAlert(`${res?.message}`, "error");
+    //             }
+    //         })
+    //         .catch((err: any) => {
+    //             AlertService.showAlert(`${err?.message}`, "error");
+    //             console.log(err);
+    //         });
+    // };
+
+
+    const API_URL = `http://54.242.253.211:5000/consultation-request/${userLoginedData?.user?.patientId}`;
+
+    const fetchConsultationRequests = async () => {
+        try {
+            const response = await axios.get(API_URL);
+            setRequests(response.data)
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching consultation requests', error);
+            throw error;
+        }
     };
+
+    useEffect(() => {
+        fetchConsultationRequests()
+    }, [])
+
+    const inputFile: any = useRef()
+
 
     const handleConsultationRequestForm = async (values: VitalSigns) => {
         const submitObject = {
@@ -134,6 +179,7 @@ const Patient = () => {
                 respiration: parseInt(values.respiration),
                 pso2: parseInt(values.pso2),
             },
+            radiologyImage: imgUrl
         };
         console.log(submitObject, "submitObject");
 
@@ -497,7 +543,7 @@ const Patient = () => {
                                     >
                                         <DescriptionRoundedIcon sx={{ color: "white" }} />
                                     </Box>
-                                    <Box
+                                    {/* <Box
                                         sx={{
                                             padding: "0.5rem",
                                             borderRadius: "4px",
@@ -516,12 +562,13 @@ const Patient = () => {
                                         }}
                                     >
                                         <RadarRoundedIcon sx={{ color: "white" }} />
-                                    </Box>
+                                    </Box> */}
                                 </Box>
                             </Box>
                         </Box>
                     </Grid>
                     <Grid item lg={4} md={4} sm={4} xs={12}>
+
                         <Box
                             sx={{
                                 width: "100%",
@@ -535,7 +582,45 @@ const Patient = () => {
                                 overflowY: "auto",
                             }}
                         >
-                            <Formik
+                            <Box sx={{ width: '100%', height: '3.5rem', display: 'flex', mb: 5 }}>
+                                <Box sx={{
+                                    width: '100%', height: '100%', backgroundColor: "rgb(32, 37, 45)",
+                                    color: 'white',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    cursor: 'pointer',
+                                    transition: '0.3s ease-in-out',
+                                    borderBottom: active === 'New Request' ? '1px solid #29f19c' : 'none'
+                                }}
+                                    onClick={() => setActive('New Request')}
+                                >
+                                    <Typography sx={{
+                                        transition: '0.3s ease-in-out',
+                                        opacity: active === 'New Request' ? '1' : '0.5'
+                                    }}> New Request </Typography>
+                                </Box>
+                                <Box sx={{
+                                    width: '100%', height: '100%', backgroundColor: "rgb(32, 37, 45)",
+                                    color: 'white',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    cursor: 'pointer',
+                                    transition: '0.3s ease-in-out',
+                                    borderBottom: active === 'Old Requests' ? '1px solid #29f19c' : 'none'
+
+                                }}
+                                    onClick={() => setActive('Old Requests')}
+
+                                >
+                                    <Typography sx={{
+                                        transition: '0.3s ease-in-out',
+                                        opacity: active === 'Old Requests' ? '1' : '0.5'
+                                    }}> Old Requests </Typography>
+                                </Box>
+                            </Box>
+                            {active === 'New Request' ? <Formik
                                 initialValues={vitalsInitialValues}
                                 onSubmit={(values) => {
                                     console.log(values);
@@ -663,6 +748,28 @@ const Patient = () => {
                                                 />
                                             </Grid>
                                             <Grid item lg={12} md={12} sm={6} xs={12}>
+                                                <Box sx={{
+                                                    width: "100%",
+                                                    height: "3rem",
+                                                    borderRadius: "5px",
+                                                    backgroundColor: "rgb(32, 37, 45)",
+                                                    cursor: "pointer",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "space-between",
+                                                    padding: "1rem",
+                                                    boxSizing: "border-box",
+                                                    border: '0.1px solid #ffffff50'
+                                                }}
+                                                    onClick={() => inputFile.current.click()}
+                                                >
+                                                    <Typography sx={{ color: 'white' }}>Upload Your Radiology Scan</Typography>
+                                                    <FileUploadRoundedIcon sx={{ color: 'white' }} />
+                                                </Box>
+                                                <input type="file" accept=".dcm" onChange={handleFileInputChange} ref={inputFile} style={{ display: 'none' }} />
+                                            </Grid>
+
+                                            <Grid item lg={12} md={12} sm={6} xs={12}>
                                                 <Button
                                                     color="secondary"
                                                     fullWidth
@@ -680,7 +787,20 @@ const Patient = () => {
                                         </Grid>
                                     </Box>
                                 )}
-                            </Formik>
+                            </Formik> :
+
+                                requests?.map((request: any, idx: number) => <Box key={idx} sx={{
+                                    backgroundColor: "rgb(32, 37, 45)",
+                                    padding: "1rem",
+                                    boxSizing: "border-box",
+                                    mb: 2,
+                                    borderRadius: '5px'
+                                }}>
+                                    <Typography sx={{ color: 'white' }}><span style={{ opacity: 0.6 }}>complaint:</span> {request.complaint}</Typography>
+                                    <Typography sx={{ color: 'white' }}><span style={{ opacity: 0.6 }}>result:</span> {request.result === null ? "Doctor didn't Respond yet" : request.result}</Typography>
+                                </Box>)
+
+                            }
                         </Box>
                     </Grid>
                 </Grid>

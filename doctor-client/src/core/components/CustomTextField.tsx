@@ -68,7 +68,7 @@ const CustomTextField = ({
           rows={5}
           sx={{
             boxShadow: "none",
-            color: nonEditable || !enable ? "#fff" : "#fff",
+            color: "#fff",
             borderRadius: "5px",
 
             ".MuiOutlinedInput-notchedOutline": {
@@ -80,8 +80,12 @@ const CustomTextField = ({
             },
             margin: "0.3rem 0rem",
             maxWidth: "100%",
+            "&.Mui-disabled": {
+              color: 'white'
+            },
             ...sx,
           }}
+
           inputProps={{ maxLength: maxLength }}
           {...props}
         />
