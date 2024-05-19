@@ -1,6 +1,6 @@
 import { Box, Grid, Button } from "@mui/material";
 import { Formik } from "formik";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import CustomTextField from "../../../../core/components/CustomTextField";
 import Header from "../../../../core/components/Header";
 // import EditRoundedIcon from '@mui/icons-material/EditRounded';
@@ -10,8 +10,15 @@ import endpoints from "../../../../core/api/endpoints";
 import { StringLiteral } from "typescript";
 import AlertService from "../../../../core/services/alert-service";
 
-const DoctorResponce = ({ patientId, consultationReqsData }: {patientId : any , consultationReqsData : any}) => {
+const DoctorResponce = ({
+  patientId,
+  consultationReqsData,
+}: {
+  patientId: any;
+  consultationReqsData: any;
+}) => {
   // const [editing, setEditing] = useState<boolean>(false)
+  const [prediction, setPrediction] = useState<boolean | null>(null);
 
   const onSubmitConsultatiionReq = (values: any) => {
     if (patientId) {
@@ -36,19 +43,31 @@ const DoctorResponce = ({ patientId, consultationReqsData }: {patientId : any , 
   };
 
   useEffect(() => {
-    if(consultationReqsData?.radiologyImage !== "") {
-      axios.get('').then((res : any) => {
-        console.log(res,'res')
-      }).catch((err : any) => {
-        console.log(err)
-        AlertService.showAlert(`${err.message}`, "error");
-      })
+    if (consultationReqsData?.radiologyImage !== "") {
+      axios
+        .post("http://localhost:5000/predict", {
+          url: consultationReqsData?.radiologyImage,
+        })
+        .then((res: any) => {
+          console.log(res, "res");
+          setPrediction(res.data.prediction == "Yes" ? true : false);
+        })
+        .catch((err: any) => {
+          console.log(err);
+          AlertService.showAlert(`${err.message}`, "error");
+        });
     }
-  },[])
-  
+  }, []);
+
   return (
     <Formik
-      initialValues={ consultationReqsData?.radiologyImage !== "" ? { message: "", decision: "Yes" } : { message: ""} }
+      initialValues={
+        consultationReqsData?.radiologyImage !== ""
+          ? prediction
+            ? { decision: "Yes", message: "Tumor Detected." }
+            : { decision: "No", message: "No Tumor Detected." }
+          : { message: "" }
+      }
       onSubmit={(values, { resetForm }) => {
         console.log(values);
         onSubmitConsultatiionReq(values);
