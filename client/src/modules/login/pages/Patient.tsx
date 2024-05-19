@@ -154,6 +154,7 @@ const Patient = () => {
     const fetchConsultationRequests = async () => {
         try {
             const response = await axios.get(API_URL);
+            console.log('response', response);
             setRequests(response.data)
             return response.data;
         } catch (error) {
@@ -171,7 +172,7 @@ const Patient = () => {
 
     const handleConsultationRequestForm = async (values: VitalSigns) => {
         const submitObject = {
-            patientId: userLoginedData?.user?.patientId,
+            patientId: 'clwdo07s80004x5lpolg3v8pw',
             complaint: values.consultationRequest,
             vitals: {
                 pulse: parseInt(values.pulse),
@@ -179,7 +180,7 @@ const Patient = () => {
                 respiration: parseInt(values.respiration),
                 pso2: parseInt(values.pso2),
             },
-            radiologyImage: imgUrl
+            // radiologyImage: imgUrl
         };
         console.log(submitObject, "submitObject");
 
@@ -251,7 +252,7 @@ const Patient = () => {
                                 <Typography sx={{ fontSize: "2rem", marginBottom: "1rem" }}>
                                     Hello{" "}
                                     <span style={{ fontWeight: "600", color: "black" }}>
-                                        {userLoginedData?.user?.username}
+                                        {userLoginedData?.user?.patient.name}
                                     </span>
                                 </Typography>
                                 <Box

@@ -2,7 +2,7 @@ import { Box, Grid, Typography } from '@mui/material'
 import React from 'react'
 import Header from '../../../../core/components/Header'
 import DataCard from './DataCard'
-import DoctorResponce from './DoctorResponce';
+import DoctorResponce from './DoctorResponse';
 
 interface Patient {
     PID: {
