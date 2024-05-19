@@ -1,10 +1,11 @@
 from convert import dicom_to_jpeg
-from flask import Flask, request, jsonify  # type: ignore
+from flask import Flask, request, jsonify, send_from_directory  # type: ignore
 from tensorflow.keras.models import load_model  # type: ignore
 import numpy as np
 import cv2
 import os
 from werkzeug.utils import secure_filename  # type: ignore
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -13,7 +14,9 @@ model = load_model('model/brain_tumor.h5')
 
 # Define the path for uploading images
 UPLOAD_FOLDER = 'static/uploads/'
+STORAGE_FOLDER = 'static/storage/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['STORAGE_FOLDER'] = STORAGE_FOLDER
 
 # Ensure the upload folder exists
 if not os.path.exists(UPLOAD_FOLDER):
@@ -60,10 +63,14 @@ def predict_tumor(image_path):
 
 ############################# Endpoints #############################
 
+# ********************************************* HEALTH CHECK ENDPOINTS ***********************************************
+
 
 @app.route('/ping', methods=['GET'])
 def ping():
     return jsonify({'response': 'pong'})
+
+# ********************************************* Prediction ENDPOINTS ***********************************************
 
 
 @app.route('/predict', methods=['POST'])
@@ -81,6 +88,7 @@ def predict():
         if file.filename.endswith('.dcm'):  # Convert DICOM to JPEG
             jpeg_path = os.path.splitext(filepath)[0] + '.jpg'
             dicom_to_jpeg(filepath, jpeg_path)
+            os.remove(filepath)
             filepath = jpeg_path
 
         elif not file.filename.endswith(('.jpg', '.jpeg')):
@@ -89,8 +97,48 @@ def predict():
         # Preprocess the image and make prediction
         result = predict_tumor(filepath)
 
+        # Remove the uploaded image
+        os.remove(filepath)
+
         return jsonify({'prediction': result})
     return jsonify({'error': 'Failed to process the request'}), 500
+
+
+# ********************************************* FILES ENDPOINTS ***********************************************
+
+@app.route('/files/store', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+    if file:
+        filename = secure_filename(file.filename)
+        # Generate a unique filename using the current timestamp
+        timestamp = datetime.now().strftime('%Y%m%d%H%M%S%f')
+        ext = os.path.splitext(filename)[1]
+        unique_filename = f"{timestamp}{ext}"
+        file.save(os.path.join(app.config['STORAGE_FOLDER'], unique_filename))
+        file_url = request.url_root + 'files/' + unique_filename
+        return jsonify({"url": file_url}), 201
+
+
+@app.route('/files/<filename>', methods=['GET'])
+def get_file(filename):
+    try:
+        return send_from_directory(app.config['STORAGE_FOLDER'], filename)
+    except FileNotFoundError:
+        return jsonify({"error": "File not found"}), 404
+
+
+@app.route('/files/<filename>', methods=['DELETE'])
+def delete_file(filename):
+    try:
+        os.remove(os.path.join(app.config['STORAGE_FOLDER'], filename))
+        return jsonify({"message": "File deleted successfully"}), 200
+    except FileNotFoundError:
+        return jsonify({"error": "File not found"}), 404
 
 
 if __name__ == '__main__':
