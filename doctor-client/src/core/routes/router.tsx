@@ -29,10 +29,6 @@ class RouterClass {
       element: <Patients />,
     },
     {
-      path: AppRoutes.dicom,
-      element: <DicomViewer />,
-    },
-    {
       path: AppRoutes.Error404,
       element: <ErrorPage />,
     },

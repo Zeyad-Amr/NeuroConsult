@@ -3,6 +3,7 @@ import cornerstone from "cornerstone-core";
 import dicomParser from "dicom-parser";
 import CornerstoneViewport from "react-cornerstone-viewport";
 import * as cornerstoneWADOImageLoader from "cornerstone-wado-image-loader";
+import axios from "../../core/api/api";
 
 type ToolConfig = {
   name: string;
@@ -47,9 +48,15 @@ const initialConfig: Config = {
   frameRate: 1,
 };
 
-const DicomViewer: React.FC = () => {
+const DicomViewer = ({ fileUrl }: { fileUrl: string }) => {
   const [config, setConfig] = useState<Config>(initialConfig);
   const [isImageIDs, setIsImageIDs] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (fileUrl) {
+      // axios.get()
+    }
+  }, [fileUrl]);
 
   const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

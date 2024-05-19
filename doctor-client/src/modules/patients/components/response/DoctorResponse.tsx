@@ -1,6 +1,6 @@
 import { Box, Grid, Button } from "@mui/material";
 import { Formik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import CustomTextField from "../../../../core/components/CustomTextField";
 import Header from "../../../../core/components/Header";
 // import EditRoundedIcon from '@mui/icons-material/EditRounded';
@@ -10,7 +10,7 @@ import endpoints from "../../../../core/api/endpoints";
 import { StringLiteral } from "typescript";
 import AlertService from "../../../../core/services/alert-service";
 
-const DoctorResponce = ({ patientId }: any) => {
+const DoctorResponce = ({ patientId, consultationReqsData }: {patientId : any , consultationReqsData : any}) => {
   // const [editing, setEditing] = useState<boolean>(false)
 
   const onSubmitConsultatiionReq = (values: any) => {
@@ -35,13 +35,24 @@ const DoctorResponce = ({ patientId }: any) => {
     }
   };
 
+  useEffect(() => {
+    if(consultationReqsData?.radiologyImage !== "") {
+      axios.get('').then((res : any) => {
+        console.log(res,'res')
+      }).catch((err : any) => {
+        console.log(err)
+        AlertService.showAlert(`${err.message}`, "error");
+      })
+    }
+  },[])
+  
   return (
     <Formik
-      initialValues={{ message: "", decision: "Yes" }}
-      onSubmit={(values , {resetForm}) => {
+      initialValues={ consultationReqsData?.radiologyImage !== "" ? { message: "", decision: "Yes" } : { message: ""} }
+      onSubmit={(values, { resetForm }) => {
         console.log(values);
         onSubmitConsultatiionReq(values);
-        resetForm()
+        resetForm();
       }}
       enableReinitialize
     >
@@ -55,63 +66,51 @@ const DoctorResponce = ({ patientId }: any) => {
       }) => (
         <Box component="form" onSubmit={handleSubmit} noValidate>
           <Grid container spacing={2}>
-            <Grid item lg={7} md={7} sm={12} xs={12}>
-              <CustomTextField
-                dark
-                noLable
-                isRequired
-                enable={true}
-                name="decision"
-                label="decision"
-                value={values.decision}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.decision}
-                touched={touched.decision}
-                width="100%"
-                props={{
-                  type: "text",
-                }}
-                sx={{
-                  backgroundColor: "rgb(32, 37, 45)",
-                }}
-              />
-            </Grid>
-            {/* <Grid item lg={2} md={2} sm={2} xs={2} sx={{ mt: 0.5 }}>
-                            <Box sx={{
-                                height: '3.5rem',
-                                transition: ' 0.3s ease-in-out',
-                                backgroundColor: editing ? '#29f19c' : ' rgb(32, 37, 45)',
-                                color: editing ? 'rgb(32, 37, 45)' : ' white',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                borderRadius: '5px',
-                                cursor:'pointer',
-                            }}
-                                onClick={() => setEditing(!editing)}
-                            >
-                                <EditRoundedIcon />
-                            </Box>
-                        </Grid> */}
-            <Grid item lg={5} md={5} sm={12} xs={12} sx={{ mt: 0.5 }}>
-              <Button
-                color="secondary"
-                fullWidth
-                variant="contained"
-                disableElevation
-                component={Link}
-                to="/dicom"
-                type="button"
-                sx={{
-                  background: "linear-gradient(90deg, #29f19c, #02a1f9)",
-                  height: "3.5rem",
-                  color: "rgb(32, 37, 45)",
-                }}
-              >
-                View Image
-              </Button>
-            </Grid>
+            {consultationReqsData?.radiologyImage !== "" ? (
+              <>
+                <Grid item lg={7} md={7} sm={12} xs={12}>
+                  <CustomTextField
+                    dark
+                    noLable
+                    isRequired
+                    enable={true}
+                    name="decision"
+                    label="decision"
+                    value={values.decision}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={errors.decision}
+                    touched={touched.decision}
+                    width="100%"
+                    props={{
+                      type: "text",
+                    }}
+                    sx={{
+                      backgroundColor: "rgb(32, 37, 45)",
+                    }}
+                  />
+                </Grid>
+
+                <Grid item lg={5} md={5} sm={12} xs={12} sx={{ mt: 0.5 }}>
+                  <Button
+                    color="secondary"
+                    fullWidth
+                    variant="contained"
+                    disableElevation
+                    component={Link}
+                    to="/dicom"
+                    type="button"
+                    sx={{
+                      background: "linear-gradient(90deg, #29f19c, #02a1f9)",
+                      height: "3.5rem",
+                      color: "rgb(32, 37, 45)",
+                    }}
+                  >
+                    View Image
+                  </Button>
+                </Grid>
+              </>
+            ) : null}
             <Grid item lg={12} md={12} sm={12} xs={12}>
               <Header title="Consultation Request" dark />
             </Grid>
