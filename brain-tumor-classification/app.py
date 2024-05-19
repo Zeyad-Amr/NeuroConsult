@@ -1,5 +1,6 @@
 from convert import dicom_to_jpeg
 from flask import Flask, request, jsonify, send_from_directory  # type: ignore
+from flask_cors import CORS  # type: ignore # import CORS
 import requests  # type: ignore
 from tensorflow.keras.models import load_model  # type: ignore
 import numpy as np
@@ -9,6 +10,8 @@ from werkzeug.utils import secure_filename  # type: ignore
 from datetime import datetime
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
+
 
 # Load your trained model
 model = load_model('model/brain_tumor.h5')
@@ -16,6 +19,8 @@ model = load_model('model/brain_tumor.h5')
 # Define the path for uploading images
 UPLOAD_FOLDER = 'static/uploads/'
 STORAGE_FOLDER = 'static/storage/'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['STORAGE_FOLDER'] = STORAGE_FOLDER
 
 
 def preprocess_image(image_path, target_size=(224, 224)):
@@ -149,12 +154,4 @@ def delete_file(filename):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
-
-if __name__ == '__main__':
-    # Ensure the upload folder exists
-    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-    app.config['STORAGE_FOLDER'] = STORAGE_FOLDER
-    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-    os.makedirs(STORAGE_FOLDER, exist_ok=True)
     app.run(debug=True)

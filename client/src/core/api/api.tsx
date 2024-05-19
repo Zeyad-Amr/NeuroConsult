@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://hcis2-project.onrender.com/api/",
+  baseURL: "http://54.242.253.211:5000/",
 });
 
 export default api;
