@@ -10,26 +10,26 @@ import Data from './components/response/Data'
 import { getLocalStorageDataByKey, logOut } from '../../core/services/shared-service'
 
 const Patients = () => {
+    let baseUrl = 'http://54.242.253.211:4000/'
+    let userData = getLocalStorageDataByKey("userData");
     const [currentPatient, setCurrentPatient] = useState<number>(0)
     const [userLoginedData, setUserLoginedData] = useState<any>();
+    const [consultationReqData, setConsultationReqData] = useState<any>();
 
     const getCurrentPatient=(currentPatient:number) => {
         setCurrentPatient(currentPatient)
     }
     useEffect(() => {
-        let eventSource = new EventSource("http://localhost:4000/" + 'streaming/event')
+        let eventSource = new EventSource( baseUrl + 'streaming/event')
         eventSource.onmessage = (ev) => {
             let data_json = JSON.parse(ev.data)
             console.log(ev.data)
+            // console.log(data_json)
+            setConsultationReqData(data_json)
             // setStreamedData(data_json);
-            console.log(data_json)
-            console.log(JSON.parse(data_json[0].requestMetadata))
+            // console.log(JSON.parse(data_json[0].requestMetadata))
         }
     }, [])
-    useEffect(() => {
-        let userData = getLocalStorageDataByKey("userData");
-        setUserLoginedData(userData);
-      }, []);
 
     const data = [
         {
@@ -127,7 +127,7 @@ const Patients = () => {
                                 mt: 2
                             }}>
                                 {/* <Requests /> */}
-                                <Table data={data} getCurrentPatient={getCurrentPatient} active={currentPatient}/>
+                                { consultationReqData && <Table data={consultationReqData} getCurrentPatient={getCurrentPatient} active={currentPatient}/> }
                             </Box>
                         </Box>
                     </Grid>
@@ -139,7 +139,7 @@ const Patients = () => {
                             padding: '2rem',
                             boxSizing: 'border-box',
                         }}>
-                            <Data data={data[currentPatient]} />
+                          { consultationReqData && consultationReqData[currentPatient].ConsultationRequest &&  <Data data={consultationReqData[currentPatient].ConsultationRequest} /> }
                             {/* <Formik
                                 initialValues={{ illnesses: "", Complaints: "" }}
                                 onSubmit={(values) => {

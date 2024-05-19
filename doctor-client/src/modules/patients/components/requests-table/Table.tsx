@@ -45,7 +45,7 @@ interface Patient {
     };
 }
 
-const Table = ({ data, active, getCurrentPatient }: { data: Patient[], active: number, getCurrentPatient: (idx: number) => void }) => {
+const Table = ({ data, active, getCurrentPatient }: { data: any[], active: number, getCurrentPatient: (idx: number) => void }) => {
 
     return (
         <div>

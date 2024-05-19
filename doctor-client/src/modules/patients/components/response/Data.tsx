@@ -46,28 +46,28 @@ interface Patient {
         complaint: string;
     };
 }
-const Data = ({ data }: { data: Patient }) => {
+const Data = ({ data }: { data: any }) => {
 
     return (
         <Grid container spacing={2}>
-            <Grid item lg={6} md={6} sm={6} xs={6}>
+            <Grid item lg={12} md={12} sm={12} xs={12}>
                 <DataCard header='Vitals'>
                     <Typography sx={{ color: 'white', display: 'flex', justifyContent: 'space-between ' }}>
-                        pulse <span style={{ color: '#29f19c' }}>{data.vitals.pulse}</span>
+                        pulse <span style={{ color: '#29f19c' }}>{data?.vitals?.pulse}</span>
                     </Typography>
                     <Typography sx={{ color: 'white', display: 'flex', justifyContent: 'space-between ' }}>
-                        bp <span style={{ color: '#29f19c' }}>{data.vitals.bp}</span>
+                        bp <span style={{ color: '#29f19c' }}>{data?.vitals?.bp}</span>
                     </Typography>
                     <Typography sx={{ color: 'white', display: 'flex', justifyContent: 'space-between ' }}>
-                        respiration <span style={{ color: '#29f19c' }}>{data.vitals.respiration}</span>
+                        respiration <span style={{ color: '#29f19c' }}>{data?.vitals?.respiration}</span>
                     </Typography>
                     <Typography sx={{ color: 'white', display: 'flex', justifyContent: 'space-between ' }}>
-                        pso2 <span style={{ color: '#29f19c' }}>{data.vitals.pso2}</span>
+                        pso2 <span style={{ color: '#29f19c' }}>{data?.vitals?.pso2}</span>
                     </Typography>
                 </DataCard>
 
             </Grid>
-            <Grid item lg={6} md={6} sm={6} xs={6}>
+            {/* <Grid item lg={6} md={6} sm={6} xs={6}>
                 <DataCard header='medications'>
                     {data.medications.map((medication, idx) => (
 
@@ -77,16 +77,16 @@ const Data = ({ data }: { data: Patient }) => {
                     ))
                     }
                 </DataCard>
-            </Grid>
+            </Grid> */}
             <Grid item lg={12} md={12} sm={12} xs={12} sx={{ mt: 4 }}>
                 <DataCard header='complaint' >
                     <Typography sx={{ color: 'white', display: 'flex', justifyContent: 'space-between ' }}>
-                        {data.consultationReqs.complaint}
+                        {data?.consultationReqs?.complaint}
                     </Typography>
                 </DataCard>
             </Grid>
             <Grid item lg={12} md={12} sm={12} xs={12} sx={{ mt: 4 }}>
-                <DoctorResponce />
+            { data.consultationReqs.id &&  <DoctorResponce patientId={data.consultationReqs.id} />}
             </Grid>
         </Grid>
     )

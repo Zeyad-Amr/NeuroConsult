@@ -64,6 +64,7 @@ const Patient = () => {
 
     const [requests, setRequests] = useState([])
     const [imgUrl, setImgUrl] = useState('')
+
     const handleFileInputChange = async (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
@@ -72,10 +73,9 @@ const Patient = () => {
             formData.append('file', file);
 
             try {
-                const response = await axios.post('http://localhost:5000/files/store', formData);
+                const response = await axios.post('files/store', formData);
                 console.log(response.data)
                 setImgUrl(response.data)
-                return response.data;
             } catch (error) {
                 console.error('Error fetching consultation requests', error);
                 throw error;
@@ -85,8 +85,9 @@ const Patient = () => {
 
     const patientOmElData: any = useRef();
     const [active, setActive] = useState<string>('New Request')
+    let userData = getLocalStorageDataByKey("userData");
+
     useEffect(() => {
-        let userData = getLocalStorageDataByKey("userData");
         setUserLoginedData(userData);
         setpatientData(userData?.user.patient);
         console.log(userData?.user.patientId, "userData.patientId");
@@ -95,6 +96,7 @@ const Patient = () => {
         let value = patientOmElData.current
         console.log(value, "value");
         setValue(value)
+        fetchConsultationRequests()
         // getAllPatientsData();
 
         setPatientDataInitialValues({
@@ -149,9 +151,9 @@ const Patient = () => {
     // };
 
 
-    const API_URL = `http://54.242.253.211:5000/consultation-request/${userLoginedData?.user?.patientId}`;
-
+    
     const fetchConsultationRequests = async () => {
+        const API_URL = `consultation-request/${userData?.user?.patientId}`;
         try {
             const response = await axios.get(API_URL);
             console.log('response', response);
@@ -163,16 +165,12 @@ const Patient = () => {
         }
     };
 
-    useEffect(() => {
-        fetchConsultationRequests()
-    }, [])
-
     const inputFile: any = useRef()
 
 
     const handleConsultationRequestForm = async (values: VitalSigns) => {
         const submitObject = {
-            patientId: 'clwdo07s80004x5lpolg3v8pw',
+            patientId: userData?.user?.patientId,
             complaint: values.consultationRequest,
             vitals: {
                 pulse: parseInt(values.pulse),
@@ -180,7 +178,7 @@ const Patient = () => {
                 respiration: parseInt(values.respiration),
                 pso2: parseInt(values.pso2),
             },
-            // radiologyImage: imgUrl
+            radiologyImage: imgUrl
         };
         console.log(submitObject, "submitObject");
 
@@ -189,11 +187,12 @@ const Patient = () => {
             .then((res: any) => {
                 console.log(res);
                 console.log(res?.data);
-                if (res?.data) {
+                if (res?.status === 201) {
                     AlertService.showAlert(
                         "Consultation request is added successfully",
                         "success"
                     );
+                    fetchConsultationRequests()
                 }
             })
             .catch((err: any) => {
@@ -623,10 +622,12 @@ const Patient = () => {
                             </Box>
                             {active === 'New Request' ? <Formik
                                 initialValues={vitalsInitialValues}
-                                onSubmit={(values) => {
+                                onSubmit={(values , { resetForm }) => {
                                     console.log(values);
-                                    handleConsultationRequestForm(values);
+                                    handleConsultationRequestForm(values)
+                                    resetForm();
                                 }}
+                                enableReinitialize
                             >
                                 {({
                                     values,
