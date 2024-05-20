@@ -21,6 +21,7 @@
 8. [Benefits](#8-benefits)
    - [Key Benefits](#key-benefits)
 9. [Technologies](#9-technologies)
+10. [Contributors](#10-contributors)
 
 ## 1. Introduction
 
@@ -116,3 +117,62 @@
 - **HL7 for data exchange between servers**
 - **DICOM for Imaging Scans**
 - **Cornerstone.js for DICOM Viewer**
+
+
+## 10. Contributors
+<table>
+    <tbody>
+    <tr>
+        <td align="center" valign="top" width="20%">
+            <a href="https://github.com/Zeyad-Amr">
+                <img alt="Zeyad Amr Fekry" src="https://avatars.githubusercontent.com/Zeyad-Amr" width="100px;">
+                <br/>
+                <sub><b>Zeyad Amr Fekry</b></sub>
+            </a>
+            <br/>
+            <span>Full Stack</span>
+        </td>
+        <td align="center" valign="top" width="20%">
+            <a href="https://github.com/AhmedRaouf481">
+                <img alt="Ahmed Abd ElRaouf" src="https://avatars.githubusercontent.com/AhmedRaouf481" width="100px;">
+                <br/>
+                <sub><b>Ahmed Abd ElRaouf</b></sub>
+            </a>
+            <br/>
+            <span>Full Stack</span>
+        </td>
+        <td align="center" valign="top" width="20%">
+            <a href="https://github.com/Abdelrhman012">
+                <img alt="Abdelrahman Yasser" src="https://avatars.githubusercontent.com/Abdelrhman012" width="100px;">
+                <br/>
+                <sub><b>Abdelrahman Yasser</b></sub>
+            </a>
+            <br/>
+            <span>Frontend</span>
+        </td>
+        <td align="center" valign="top" width="20%">
+            <a href="https://github.com/momen882001">
+                <img alt="Mo'men Mohamed" src="https://avatars.githubusercontent.com/momen882001" width="100px;">
+                <br/>
+                <sub><b>Mo'men Mohamed</b></sub>
+            </a>
+            <br/>
+            <span>Frontend</span>
+        </td>
+        <td align="center" valign="top" width="20%">
+            <a href="https://github.com/Mazen-Aboulkhair">
+                <img alt="Diaa Badr Eldin" src="https://avatars.githubusercontent.com/diaabadr" width="100px;">
+                <br/>
+                <sub><b>Diaa Badr Eldin</b></sub>
+            </a>
+            <br/>
+            <span>Backend</span>
+        </td>
+    </tr>
+</table>
+
+
+### Submitted to:
+Dr Eman Ayman & Eng Yara Wael
+
+All rights reserved © 2024
