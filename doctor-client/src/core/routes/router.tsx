@@ -32,6 +32,10 @@ class RouterClass {
       path: AppRoutes.Error404,
       element: <ErrorPage />,
     },
+    {
+      path: AppRoutes.dicom,
+      element: <DicomViewer />,
+    },
   ];
 
   static getRoutes(): ReactElement[] {

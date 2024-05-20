@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import CustomTextField from "../../../../core/components/CustomTextField";
 import Header from "../../../../core/components/Header";
 // import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "../../../../core/api/api";
 import endpoints from "../../../../core/api/endpoints";
 import { StringLiteral } from "typescript";
@@ -19,6 +19,7 @@ const DoctorResponce = ({
 }) => {
   // const [editing, setEditing] = useState<boolean>(false)
   const [prediction, setPrediction] = useState<boolean | null>(null);
+  const navigate = useNavigate();
 
   const onSubmitConsultatiionReq = (values: any) => {
     if (patientId) {
@@ -50,7 +51,13 @@ const DoctorResponce = ({
         })
         .then((res: any) => {
           console.log(res, "res");
-          setPrediction(res.data.prediction == "Yes" ? true : false);
+          setPrediction(
+            res.data.prediction == "Yes"
+              ? true
+              : res.data.prediction == "No"
+              ? false
+              : null
+          );
         })
         .catch((err: any) => {
           console.log(err);
@@ -63,9 +70,19 @@ const DoctorResponce = ({
     <Formik
       initialValues={
         consultationReqsData?.radiologyImage !== ""
-          ? prediction
-            ? { decision: "Yes", message: "Tumor Detected." }
-            : { decision: "No", message: "No Tumor Detected." }
+          ? prediction == true
+            ? {
+                decision: "Tumor Detected.",
+                message:
+                  "Your recent MRI scan has been reviewed, and the results indicate the presence of a brain tumor. We recommend scheduling an appointment with your healthcare provider as soon as possible to discuss further diagnostic steps and treatment options.",
+              }
+            : prediction == false
+            ? {
+                decision: "No Tumor Detected.",
+                message:
+                  "Your recent MRI scan has been reviewed, and we are pleased to inform you that no brain tumor was detected. Please continue with your regular health check-ups and consult your healthcare provider if you have any concerns.",
+              }
+            : { message: "" }
           : { message: "" }
       }
       onSubmit={(values, { resetForm }) => {
@@ -117,7 +134,8 @@ const DoctorResponce = ({
                     variant="contained"
                     disableElevation
                     component={Link}
-                    to="/dicom"
+                    target="_blank"
+                    to={`/dicom?file=${consultationReqsData?.radiologyImage}`}
                     type="button"
                     sx={{
                       background: "linear-gradient(90deg, #29f19c, #02a1f9)",
@@ -131,7 +149,7 @@ const DoctorResponce = ({
               </>
             ) : null}
             <Grid item lg={12} md={12} sm={12} xs={12}>
-              <Header title="Consultation Request" dark />
+              <Header title="Consultation" dark />
             </Grid>
             <Grid item lg={12} md={12} sm={6} xs={12}>
               <CustomTextField

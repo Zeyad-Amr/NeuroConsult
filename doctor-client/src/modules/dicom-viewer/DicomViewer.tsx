@@ -48,27 +48,43 @@ const initialConfig: Config = {
   frameRate: 1,
 };
 
-const DicomViewer = ({ fileUrl }: { fileUrl: string }) => {
+const DicomViewer = () => {
   const [config, setConfig] = useState<Config>(initialConfig);
   const [isImageIDs, setIsImageIDs] = useState<boolean>(false);
 
+  // get url params
+  const params = new URLSearchParams(window.location.search);
+
   useEffect(() => {
-    if (fileUrl) {
-      // axios.get()
-    }
-  }, [fileUrl]);
+    // get file url from url params
+    const fileUrl = params.get("file");
+    console.log("fileUrl", fileUrl);
 
-  const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const imageId = cornerstoneWADOImageLoader.wadouri.fileManager.add(file);
-      console.log(imageId, "imageId");
+    getDicomImage(fileUrl ?? "");
+  }, []);
 
-      setConfig((prevConfig) => ({
-        ...prevConfig,
-        imageIds: [...prevConfig.imageIds, imageId],
-      }));
-    }
+  const getDicomImage = (fileUrl: string) => {
+    axios
+      .get(fileUrl, {
+        responseType: "blob",
+      })
+      .then((res: any) => {
+        console.log(res, "res");
+        if (res) {
+          const file = new File([res.data], "dicom.dcm", {
+            type: "application/dicom",
+          });
+
+          const imageId =
+            cornerstoneWADOImageLoader.wadouri.fileManager.add(file);
+          console.log(imageId, "imageId");
+
+          setConfig((prevConfig) => ({
+            ...prevConfig,
+            imageIds: [...prevConfig.imageIds, imageId],
+          }));
+        }
+      });
   };
 
   useEffect(() => {
@@ -79,8 +95,6 @@ const DicomViewer = ({ fileUrl }: { fileUrl: string }) => {
 
   return (
     <>
-      <input type="file" accept=".dcm" onChange={handleFileInputChange} />
-
       {isImageIDs &&
         config.imageIds &&
         config.viewports.map((viewportIndex) => (
@@ -89,7 +103,7 @@ const DicomViewer = ({ fileUrl }: { fileUrl: string }) => {
             style={{ flex: "1", display: "flex", flexDirection: "row" }}
           >
             <CornerstoneViewport
-              style={{ flex: "1", maxWidth: "720px", height: "470px" }}
+              style={{ flex: "1", width: "100%", height: "100vh" }}
               tools={config.tools}
               imageIds={config.imageIds}
               imageIdIndex={config.imageIdIndex}
