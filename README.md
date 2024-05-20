@@ -3,25 +3,26 @@
 ## Table of Contents
 
 1. [Introduction](#1-introduction)
-2. [Project Demo](#2-project-demo)
-3. [System Overview](#3-system-overview)
+2. [System Overview](#2-system-overview)
    - [Main Features](#main-features)
-4. [Project Structure](#4-project-structure)
+3. [Project Demo](#3-project-demo)
+4. [Screenshots](#4-screenshots)
+5. [Project Structure](#5-project-structure)
    - [Patient Server](#patient-server)
    - [Doctor Server](#doctor-server)
    - [Storage & Prediction Server](#storage--prediction-server)
-5. [Workflow Overview](#5-workflow-overview)
+6. [Workflow Overview](#6-workflow-overview)
    - [Patient Interaction](#patient-interaction)
    - [Doctor Interaction](#doctor-interaction)
    - [Final Step](#final-step)
-6. [Clinical Decision Support System (CDSS)](#6-clinical-decision-support-system-cdss)
+7. [Clinical Decision Support System (CDSS)](#7-clinical-decision-support-system-cdss)
    - [CDSS Overview](#cdss-overview)
-7. [DICOM Viewer](#7-dicom-viewer)
+8. [DICOM Viewer](#8-dicom-viewer)
    - [DICOM Viewer Features](#dicom-viewer-features)
-8. [Benefits](#8-benefits)
+9. [Benefits](#9-benefits)
    - [Key Benefits](#key-benefits)
-9. [Technologies](#9-technologies)
-10. [Contributors](#10-contributors)
+10. [Technologies](#10-technologies)
+11. [Contributors](#11-contributors)
 
 ## 1. Introduction
 
@@ -30,9 +31,7 @@
 - **App operates in real-time for timely consultations.**
 - **Course project for HCIS2 applying on Networks in Medical Information System, Medical Information System Standards and CDSS.**
 
-## 2. Project Demo
-
-## 3. System Overview
+## 2. System Overview
 
 ### Main Features:
 
@@ -43,7 +42,23 @@
 - **DICOM viewer for imaging scans.**
 - **Real-time functionality using web sockets and HL7 for data exchange.**
 
-## 4. Project Structure
+## 3. Project Demo
+https://drive.google.com/file/d/1ti7VPOTQWvJ1RulaCu20WlsmuUubm45h/view?usp=drive_link
+
+## 4. Screenshots
+![Screenshot 2024-05-21 at 2 50 38 AM](https://github.com/momen882001/HCIS2-Project/assets/68791488/b33d4eac-adb6-4ac3-8648-9eb0e2ba4f25)
+![Screenshot 2024-05-21 at 2 50 43 AM](https://github.com/momen882001/HCIS2-Project/assets/68791488/7c49d122-8a2a-494a-a100-ec1c192a5640)
+![Screenshot 2024-05-21 at 2 34 04 AM](https://github.com/momen882001/HCIS2-Project/assets/68791488/37378170-1759-4f9a-ae26-8efb78fdb7ac)
+![Screenshot 2024-05-21 at 2 34 09 AM](https://github.com/momen882001/HCIS2-Project/assets/68791488/153dc745-f556-4c49-b2e3-c861201a5ebc)
+![Screenshot 2024-05-21 at 2 34 26 AM](https://github.com/momen882001/HCIS2-Project/assets/68791488/5b49a00c-bcf5-4a5b-962f-ab6c86d21150)
+![Screenshot 2024-05-21 at 2 34 34 AM](https://github.com/momen882001/HCIS2-Project/assets/68791488/4488c473-b5ca-45b9-a67d-601afa991687)
+![Screenshot 2024-05-21 at 2 34 50 AM](https://github.com/momen882001/HCIS2-Project/assets/68791488/2ad6d9d6-514f-41e8-a61f-de08667ac429)
+![Screenshot 2024-05-21 at 2 34 44 AM](https://github.com/momen882001/HCIS2-Project/assets/68791488/7ab32248-8f40-4f44-af5f-9b810543aa96)
+![Screenshot 2024-05-21 at 2 34 50 AM](https://github.com/momen882001/HCIS2-Project/assets/68791488/7e5dadf0-012d-471c-8169-65aed9c8796a)
+![Screenshot 2024-05-21 at 2 35 00 AM](https://github.com/momen882001/HCIS2-Project/assets/68791488/d6abc9ad-5f10-4734-9634-c84ba186ee78)
+
+
+## 5. Project Structure
 
 ### Patient Server:
 
@@ -58,7 +73,7 @@
 - Stores medical data and imaging scans.
 - Integrates the machine learning model for tumor classification.
 
-## 5. Workflow Overview
+## 6. Workflow Overview
 
 ### Patient Interaction:
 
@@ -83,7 +98,7 @@
 7. **Patient Receives Report:**
    - Patient receives consultation report from the doctor.
 
-## 6. Clinical Decision Support System (CDSS)
+## 7. Clinical Decision Support System (CDSS)
 
 ### CDSS Overview:
 
@@ -91,7 +106,7 @@
 - **Assists doctors by classifying tumors as present or absent.**
 - **Enhances diagnostic accuracy and efficiency.**
 
-## 7. DICOM Viewer
+## 8. DICOM Viewer
 
 ### DICOM Viewer Features:
 
@@ -99,7 +114,7 @@
 - **User-friendly interface for doctors to analyze scans.**
 - **Essential for accurate brain tumor diagnosis.**
 
-## 8. Benefits
+## 9. Benefits
 
 ### Key Benefits:
 
@@ -109,7 +124,7 @@
 - **Consistency in brain tumor diagnosis.**
 - **Efficient and effective brain tumor consultations.**
 
-## 9. Technologies
+## 10. Technologies
 
 - **React, TS for Frontend**
 - **Node, Express, TS for Backend**
@@ -119,7 +134,7 @@
 - **Cornerstone.js for DICOM Viewer**
 
 
-## 10. Contributors
+## 11. Contributors
 <table>
     <tbody>
     <tr>
