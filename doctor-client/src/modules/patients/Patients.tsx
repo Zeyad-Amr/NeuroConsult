@@ -112,14 +112,15 @@ const Patients = () => {
                         }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <Typography sx={{ fontSize: '2rem' }}>
-                                    Hello <span style={{ fontWeight: '600', color: 'black' }}>{userLoginedData?.user?.username}</span>
+                                    {/* Hello <span style={{ fontWeight: '600', color: 'black' }}>{userLoginedData?.user?.username}</span> */}
+                                    Brain Tumor Consultation
                                 </Typography>
-                                <Box
+                                {/* <Box
                                     onClick={() => logOut()}
                                     sx={{ display: 'flex', cursor: 'pointer', alignItems: 'center', fontSize: '1.2rem' }}>
                                     <Typography sx={{ fontSize: 'inherit', marginRight: '0.5rem' }}>Log Out</Typography>
                                     <LogoutRoundedIcon sx={{ fontSize: 'inherit', }} />
-                                </Box>
+                                </Box> */}
                             </Box>
                             <Header title='Consultation Requests' />
                             <Box sx={{

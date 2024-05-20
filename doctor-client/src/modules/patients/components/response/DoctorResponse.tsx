@@ -28,7 +28,7 @@ const DoctorResponce = ({
           ResponseMessage: values.message,
         })
         .then((res: any) => {
-          if (res.status === 201) {
+          if (res) {
             AlertService.showAlert(
               "Consultation Request sended successfully",
               "success"
@@ -64,7 +64,7 @@ const DoctorResponce = ({
           AlertService.showAlert(`${err.message}`, "error");
         });
     }
-  }, []);
+  }, [consultationReqsData?.radiologyImage]);
 
   return (
     <Formik

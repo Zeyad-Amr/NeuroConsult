@@ -98,7 +98,7 @@ const Patient = () => {
     let value = patientOmElData.current;
     console.log(value, "value");
     setValue(value);
-    fetchConsultationRequests();
+    // fetchConsultationRequests();
     // getAllPatientsData();
 
     setPatientDataInitialValues({
@@ -127,6 +127,17 @@ const Patient = () => {
     }
   };
 
+  useEffect(() => {
+    let baseUrl = `http://54.242.253.211:5000/`
+    let eventSource = new EventSource( baseUrl + `streaming/${userData?.user?.patientId}`)
+    eventSource.onmessage = (ev) => {
+        let data_json = JSON.parse(ev.data)
+        // console.log(ev.data,'ev.data')
+        // console.log(data_json,'data_json')
+        setRequests(data_json);
+    }
+}, [])
+
   const inputFile: any = useRef();
 
   const handleConsultationRequestForm = async (values: VitalSigns) => {
@@ -153,7 +164,7 @@ const Patient = () => {
             "Consultation request is added successfully",
             "success"
           );
-          fetchConsultationRequests();
+          // fetchConsultationRequests();
         }
       })
       .catch((err: any) => {

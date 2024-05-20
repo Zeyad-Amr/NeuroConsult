@@ -1,6 +1,7 @@
 import React from 'react'
 import TableRow from './TableRow'
 import HeaderRow from './HeaderRow'
+import PaginationComponent from './PaginationComponent';
 
 interface Patient {
     PID: {

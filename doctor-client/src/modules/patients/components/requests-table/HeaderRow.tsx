@@ -4,7 +4,7 @@ import React from 'react'
 const HeaderRow = () => {
     return (
         <Grid container spacing={1} sx={{ height: '3.2rem', mb: 1 }}>
-            <Grid item lg={5} md={5} sm={5} xs={5}>
+            <Grid item lg={4} md={4} sm={4} xs={4}>
 
                 <Box sx={{
                     borderRadius: '5px', backgroundColor: 'rgb(32, 37, 45)', height: '100%', display: 'flex',
@@ -32,13 +32,13 @@ const HeaderRow = () => {
                     <Typography sx={{ color: 'white' }}>Gender</Typography>
                 </Box>
             </Grid>
-            <Grid item lg={3} md={3} sm={3} xs={3}>
+            <Grid item lg={4} md={4} sm={4} xs={4}>
                 <Box sx={{
                     borderRadius: '5px', backgroundColor: 'rgb(32, 37, 45)', height: '100%', display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center'
                 }}>
-                    <Typography sx={{ color: 'white' }}>Phone Number</Typography>
+                    <Typography sx={{ color: 'white' }}>Created At</Typography>
                 </Box>
             </Grid>
         </Grid>

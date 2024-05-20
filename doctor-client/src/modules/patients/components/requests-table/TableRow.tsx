@@ -62,9 +62,28 @@ const TableRow = ({ data, idx, active, getCurrentPatient }: { data: any, idx: nu
         return age;
     }
 
+    const formatDateWithTime = (dateString: string): string | null => {
+        if (!dateString) return null;
+      
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return null; 
+      
+        const options: Intl.DateTimeFormatOptions = {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        //   second: '2-digit',
+          hour12: true,
+        };
+      
+        return date.toLocaleString(undefined, options);
+      };
+
     return (
         <Grid container spacing={1} sx={{ height: '3.2rem', mb: 1, cursor: 'pointer' }} onClick={() => getCurrentPatient(idx)}>
-            <Grid item lg={5} md={5} sm={5} xs={5}>
+            <Grid item lg={4} md={4} sm={4} xs={4}>
 
                 <Box sx={{
                     borderRadius: '5px', backgroundColor: active === idx ? '#aaa' : '#ccc', height: '100%', display: 'flex',
@@ -92,15 +111,15 @@ const TableRow = ({ data, idx, active, getCurrentPatient }: { data: any, idx: nu
                     <Typography sx={{ color: 'black' }}>{data.ConsultationRequest.consultationReqs.patientGender}</Typography>
                 </Box>
             </Grid>
-            {/* <Grid item lg={3} md={3} sm={3} xs={3}>
+            <Grid item lg={4} md={4} sm={4} xs={4}>
                 <Box sx={{
                     borderRadius: '5px', backgroundColor: active === idx ? '#aaa' : '#ccc', height: '100%', display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center'
                 }}>
-                    <Typography sx={{ color: 'black' }}>{data.PID.phone}</Typography>
+                    <Typography sx={{ color: 'black' }}>{formatDateWithTime(data?.createdAt)}</Typography>
                 </Box>
-            </Grid> */}
+            </Grid>
         </Grid>
     )
 }
