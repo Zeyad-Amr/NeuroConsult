@@ -5,8 +5,8 @@ import { Injectable } from '@nestjs/common';
 export class StreamingService {
   constructor(private readonly prisma: PrismaService) { }
 
-  async getResults() {
-    return await this.prisma.consultatinReq.findMany({ orderBy: { updatedAt: 'desc' } });
+  async getResults(id: string) {
+    return await this.prisma.consultatinReq.findMany({ where: { patientId: id }, orderBy: { updatedAt: 'desc' } });
   }
 
   findOne(id: number) {
