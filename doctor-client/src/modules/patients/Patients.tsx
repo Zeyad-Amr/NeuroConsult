@@ -140,7 +140,7 @@ const Patients = () => {
                             padding: '2rem',
                             boxSizing: 'border-box',
                         }}>
-                          { consultationReqData && consultationReqData[currentPatient].ConsultationRequest &&  <Data data={consultationReqData[currentPatient].ConsultationRequest} /> }
+                          { consultationReqData && consultationReqData[currentPatient]?.ConsultationRequest &&  <Data data={consultationReqData[currentPatient].ConsultationRequest} /> }
                             {/* <Formik
                                 initialValues={{ illnesses: "", Complaints: "" }}
                                 onSubmit={(values) => {

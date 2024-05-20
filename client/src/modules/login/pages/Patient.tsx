@@ -133,7 +133,7 @@ const Patient = () => {
     eventSource.onmessage = (ev) => {
         let data_json = JSON.parse(ev.data)
         // console.log(ev.data,'ev.data')
-        // console.log(data_json,'data_json')
+        console.log(data_json,'data_json')
         setRequests(data_json);
     }
 }, [])

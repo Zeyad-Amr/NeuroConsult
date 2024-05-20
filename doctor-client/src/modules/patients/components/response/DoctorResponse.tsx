@@ -9,6 +9,7 @@ import axios from "../../../../core/api/api";
 import endpoints from "../../../../core/api/endpoints";
 import { StringLiteral } from "typescript";
 import AlertService from "../../../../core/services/alert-service";
+import NotInterestedIcon from "@mui/icons-material/NotInterested";
 
 const DoctorResponce = ({
   patientId,
@@ -175,19 +176,31 @@ const DoctorResponce = ({
               />
             </Grid>
             <Grid item lg={12} md={12} sm={6} xs={12}>
-              <Button
-                color="secondary"
-                fullWidth
-                variant="contained"
-                disableElevation
-                type="submit"
-                sx={{
-                  background: "linear-gradient(90deg, #29f19c, #02a1f9)",
-                  color: "rgb(32, 37, 45)",
-                }}
-              >
-                Submit
-              </Button>
+              <Grid container spacing={1}>
+                <Grid item lg={11} md={11} sm={11} xs={11}>
+                  <Button
+                    color="secondary"
+                    fullWidth
+                    variant="contained"
+                    disableElevation
+                    type="submit"
+                    sx={{
+                      background: "linear-gradient(90deg, #29f19c, #02a1f9)",
+                      color: "rgb(32, 37, 45)",
+                    }}
+                  >
+                    Submit
+                  </Button>
+                </Grid>
+                <Grid item lg={1} md={1} sm={1} xs={1}>
+                  <NotInterestedIcon
+                  sx={{ fontSize : "2rem" , color : "#fff" }}
+                    onClick={() => {
+                      values.message = "";
+                    }}
+                  />
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </Box>
