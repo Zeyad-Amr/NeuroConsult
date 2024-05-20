@@ -27,9 +27,9 @@
 - **A web-based system for medical consultation service.**
 - **Specializes in Brain Tumor diagnosis and treatment.**
 - **App operates in real-time for timely consultations.**
+- **Course project for HCIS2 applying on Networks in Medical Information System, Medical Information System Standards and CDSS.**
 
 ## 2. Project Demo
-https://drive.google.com/file/d/1ti7VPOTQWvJ1RulaCu20WlsmuUubm45h/view?usp=drive_link
 
 ## 3. System Overview
 
@@ -40,6 +40,7 @@ https://drive.google.com/file/d/1ti7VPOTQWvJ1RulaCu20WlsmuUubm45h/view?usp=drive
 - **Doctor examination and response.**
 - **Machine Learning model for Clinical Decision Support.**
 - **DICOM viewer for imaging scans.**
+- **Real-time functionality using web sockets and HL7 for data exchange.**
 
 ## 4. Project Structure
 
