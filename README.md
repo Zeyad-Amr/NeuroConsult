@@ -1,4 +1,4 @@
-# Brain Tumor Consultation System
+# NeuroConsult: Brain Tumor Care Platform
 
 ## Table of Contents
 
