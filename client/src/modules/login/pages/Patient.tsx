@@ -118,7 +118,8 @@ const Patient = () => {
     try {
       const response = await axios.get(API_URL);
       console.log("response", response);
-      setRequests(response.data);
+      const reversedConsultationRequests = response?.data?.reverse()
+      setRequests(reversedConsultationRequests);
       return response.data;
     } catch (error) {
       console.error("Error fetching consultation requests", error);
@@ -159,6 +160,39 @@ const Patient = () => {
         AlertService.showAlert(`${err?.message}`, "error");
         console.log(err);
       });
+  };
+
+  const formatDate = (dateString : any) => {
+    if (dateString) {
+      const date = new Date(dateString);
+      if (!isNaN(date.getTime())) {
+        return date.toLocaleDateString(undefined, {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+      }
+    }
+    return null;
+  };
+
+  const formatDateWithTime = (dateString: string): string | null => {
+    if (!dateString) return null;
+  
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return null; 
+  
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      // second: '2-digit',
+      hour12: true, 
+    };
+  
+    return date.toLocaleString(undefined, options);
   };
 
   return (
@@ -298,7 +332,7 @@ const Patient = () => {
                           isRequired
                           name="birthDate"
                           label="birthdate"
-                          value={value?.birthDate}
+                          value={formatDate(value?.birthDate)}
                           onChange={handleChange}
                           onBlur={handleBlur}
                           error={errors.birthDate}
@@ -599,7 +633,7 @@ const Patient = () => {
                     <Box component="form" onSubmit={handleSubmit} noValidate>
                       <Grid container spacing={2}>
                         <Grid item lg={12} md={12} sm={12} xs={12}>
-                          <Header title="Consultation Request" dark />
+                          <Header title="Vitals" dark />
                         </Grid>
 
                         <Grid item lg={6} md={6} sm={6} xs={12}>
@@ -692,7 +726,7 @@ const Patient = () => {
                             dark
                             isRequired
                             name="consultationRequest"
-                            label="consultation Request"
+                            label="Complaint"
                             multiline
                             value={values.consultationRequest}
                             onChange={handleChange}
@@ -765,7 +799,7 @@ const Patient = () => {
                     </Box>
                   )}
                 </Formik>
-              ) : (
+              ) : requests?.length ? (
                 requests?.map((request: any, idx: number) => (
                   <Box
                     key={idx}
@@ -787,8 +821,15 @@ const Patient = () => {
                         ? "Doctor didn't Respond yet"
                         : request.result}
                     </Typography>
+                    <Typography sx={{ opacity: 0.6, marginTop : "1rem" , fontSize : '11px' , textAlign : 'end', color: "white" }}>
+                      {formatDateWithTime(request?.createdAt)}
+                    </Typography>
                   </Box>
                 ))
+              ) : (
+                <Typography sx={{ color: "white" }}>
+                  There are no previous requests yet.
+                </Typography>
               )}
             </Box>
           </Grid>
