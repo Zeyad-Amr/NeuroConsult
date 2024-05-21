@@ -46,15 +46,31 @@
 https://drive.google.com/file/d/1ti7VPOTQWvJ1RulaCu20WlsmuUubm45h/view?usp=drive_link
 
 ## 4. Screenshots
+- Login
 ![Screenshot 2024-05-21 at 2 50 38 AM](https://github.com/momen882001/HCIS2-Project/assets/68791488/b33d4eac-adb6-4ac3-8648-9eb0e2ba4f25)
+
+- Sign Up
 ![Screenshot 2024-05-21 at 2 50 43 AM](https://github.com/momen882001/HCIS2-Project/assets/68791488/7c49d122-8a2a-494a-a100-ec1c192a5640)
+
+- Patient Portal
 ![Screenshot 2024-05-21 at 2 34 04 AM](https://github.com/momen882001/HCIS2-Project/assets/68791488/37378170-1759-4f9a-ae26-8efb78fdb7ac)
+
+- Patient Old Requests
 ![Screenshot 2024-05-21 at 2 34 09 AM](https://github.com/momen882001/HCIS2-Project/assets/68791488/153dc745-f556-4c49-b2e3-c861201a5ebc)
+
+- Patient New Requests
 ![Screenshot 2024-05-21 at 2 34 26 AM](https://github.com/momen882001/HCIS2-Project/assets/68791488/5b49a00c-bcf5-4a5b-962f-ab6c86d21150)
+
+- Doctor Portal
 ![Screenshot 2024-05-21 at 2 34 34 AM](https://github.com/momen882001/HCIS2-Project/assets/68791488/4488c473-b5ca-45b9-a67d-601afa991687)
+
+- Doctor Consultation - Tumor Detected
 ![Screenshot 2024-05-21 at 2 34 50 AM](https://github.com/momen882001/HCIS2-Project/assets/68791488/2ad6d9d6-514f-41e8-a61f-de08667ac429)
+
+- Doctor Consultation - No Tumor Detected
 ![Screenshot 2024-05-21 at 2 34 44 AM](https://github.com/momen882001/HCIS2-Project/assets/68791488/7ab32248-8f40-4f44-af5f-9b810543aa96)
-![Screenshot 2024-05-21 at 2 34 50 AM](https://github.com/momen882001/HCIS2-Project/assets/68791488/7e5dadf0-012d-471c-8169-65aed9c8796a)
+
+- DICOM Viewer
 ![Screenshot 2024-05-21 at 2 35 00 AM](https://github.com/momen882001/HCIS2-Project/assets/68791488/d6abc9ad-5f10-4734-9634-c84ba186ee78)
 
 
