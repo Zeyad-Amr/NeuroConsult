@@ -191,7 +191,7 @@ https://drive.google.com/file/d/1ti7VPOTQWvJ1RulaCu20WlsmuUubm45h/view?usp=drive
             <span>Frontend</span>
         </td>
         <td align="center" valign="top" width="20%">
-            <a href="https://github.com/Mazen-Aboulkhair">
+            <a href="https://github.com/diaabadr">
                 <img alt="Diaa Badr Eldin" src="https://avatars.githubusercontent.com/diaabadr" width="100px;">
                 <br/>
                 <sub><b>Diaa Badr Eldin</b></sub>
