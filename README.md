@@ -151,6 +151,7 @@ https://drive.google.com/file/d/1ti7VPOTQWvJ1RulaCu20WlsmuUubm45h/view?usp=drive
 
 
 ## 11. Contributors
+
 <table>
     <tbody>
     <tr>
@@ -158,10 +159,11 @@ https://drive.google.com/file/d/1ti7VPOTQWvJ1RulaCu20WlsmuUubm45h/view?usp=drive
             <a href="https://github.com/Zeyad-Amr">
                 <img alt="Zeyad Amr Fekry" src="https://avatars.githubusercontent.com/Zeyad-Amr" width="100px;">
                 <br/>
-                <sub><b>Zeyad Amr Fekry</b></sub>
+                <sub><b>Zeyad Amr</b></sub>
             </a>
             <br/>
-            <span>Full Stack</span>
+            <span>Full Stack</span><br/>
+            <span>@Zeyad-Amr</span>
         </td>
         <td align="center" valign="top" width="20%">
             <a href="https://github.com/AhmedRaouf481">
@@ -170,7 +172,8 @@ https://drive.google.com/file/d/1ti7VPOTQWvJ1RulaCu20WlsmuUubm45h/view?usp=drive
                 <sub><b>Ahmed Abd ElRaouf</b></sub>
             </a>
             <br/>
-            <span>Full Stack</span>
+            <span>Full Stack</span><br/>
+            <span>@AhmedRaouf481</span>
         </td>
         <td align="center" valign="top" width="20%">
             <a href="https://github.com/Abdelrhman012">
@@ -179,7 +182,8 @@ https://drive.google.com/file/d/1ti7VPOTQWvJ1RulaCu20WlsmuUubm45h/view?usp=drive
                 <sub><b>Abdelrahman Yasser</b></sub>
             </a>
             <br/>
-            <span>Frontend</span>
+            <span>Frontend</span><br/>
+            <span>@Abdelrhman012</span>
         </td>
         <td align="center" valign="top" width="20%">
             <a href="https://github.com/momen882001">
@@ -188,16 +192,18 @@ https://drive.google.com/file/d/1ti7VPOTQWvJ1RulaCu20WlsmuUubm45h/view?usp=drive
                 <sub><b>Mo'men Mohamed</b></sub>
             </a>
             <br/>
-            <span>Frontend</span>
+            <span>Frontend</span><br/>
+            <span>@momen882001</span>
         </td>
         <td align="center" valign="top" width="20%">
             <a href="https://github.com/diaabadr">
                 <img alt="Diaa Badr Eldin" src="https://avatars.githubusercontent.com/diaabadr" width="100px;">
                 <br/>
-                <sub><b>Diaa Badr Eldin</b></sub>
+                <sub><b>Diaa Badr</b></sub>
             </a>
             <br/>
-            <span>Backend</span>
+            <span>Backend</span><br/>
+            <span>@diaabadr</span>
         </td>
     </tr>
 </table>
